@@ -17,8 +17,11 @@ class Post(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50,unique=True)
     parent = models.ForeignKey("self", default=0)
+
+    def __str__(self):
+        return "#{id} {name}".format(id=self.id , name=self.name)
 
 
 class Tags(models.Model):
