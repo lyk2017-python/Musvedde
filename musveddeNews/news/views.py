@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 class HomeView(generic.ListView):
     def get_queryset(self):
         one_week_ago = datetime.today() - timedelta(days=7)
-        return Post.objects.filter(created_at__lte=one_week_ago)
+        return Post.objects.filter()
 
 
 class CategoryView(generic.DetailView):

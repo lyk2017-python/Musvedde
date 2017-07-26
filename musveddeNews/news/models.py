@@ -6,6 +6,7 @@ class Post(models.Model):
     """ Class for Post News """
     title = models.CharField(max_length=160)
     content = models.TextField()
+    slug=models.SlugField()
     image = models.ImageField(null=True, blank=True, default=None)
     liked = models.IntegerField(default=0)
     reported = models.PositiveIntegerField(default=0)
