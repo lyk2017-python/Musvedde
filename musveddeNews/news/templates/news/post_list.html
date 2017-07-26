@@ -2,16 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ana sayfa</title>
+    <title>Anasayfa</title>
 
 </head>
 <body>
-<h1>Ana Sayfa</h1>
+<h1 style="display:inline">Anasayfa</h1>
+<ul style="float:right">
+{% for cat in categories %}
+        <li style="float:left;list-style-type:none;margin-right:10px"><a href='#' style="color:blue;text-decoration:none;">{{cat}}</a></li>
+{% endfor %}
+</ul>
+<div style="clear:both"></div>
+<hr>
 <ul>
 {% for obj in object_list %}
-    <li><a href="{% url "news_view" pk=obj.pk %}">{{obj.title}}</a></li>
-
+    <li><a href='{% url "news_view" pk=obj.pk %}'>{{obj.title}}</a></li>
 {% endfor %}
+
+
 </ul>
 </body>
 </html>
