@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 
 class HomeView(generic.ListView):
     def get_queryset(self):
-        one_week_ago = datetime.today() - timedelta(days=7)
         return Post.objects.filter()
 
     def get_context_data(self, **kwargs):
@@ -17,12 +16,9 @@ class HomeView(generic.ListView):
 
 
 class CategoryView(generic.DetailView):
-    def get_queryset(self):
-        return Category.objects.all()
-    
+    model = Category
 
 
 class NewsView(generic.DetailView):
-    def get_queryset(self):
-        return Post.objects.filter()
+    model = Post
 

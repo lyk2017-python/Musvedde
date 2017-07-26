@@ -5,7 +5,14 @@
     <title>Title</title>
 </head>
 <body>
-{{ object.title }}<br>
+<h1>{{ object.title }}</h1><br>
+<hr>
 {{ object.content }}
+{{object.tags_set.all}}
+<ul>
+{% for tag in object.tags_set.all %}
+    <li>{{tag}}</li>
+{% endfor %}
+</ul>
 </body>
 </html>
