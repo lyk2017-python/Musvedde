@@ -8,15 +8,15 @@ from datetime import datetime, timedelta
 class HomeView(generic.ListView):
     def get_queryset(self):
         one_week_ago = datetime.today() - timedelta(days=7)
-        return Post.objects.filter(created_at__gte=one_week_ago)
+        return Post.objects.filter(created_at__lte=one_week_ago)
 
 
 class CategoryView(generic.DetailView):
-    def get_queryset(self, pk):
-        category = Category.objects.get(id=pk)
-        return Post.objects.filter(categories=category)
+    def get_queryset(self):
+        return Category.objects.all()
 
 
 class NewsView(generic.DetailView):
     def get_queryset(self):
         return Post.objects.filter()
+

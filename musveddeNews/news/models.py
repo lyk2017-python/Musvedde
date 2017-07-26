@@ -1,10 +1,9 @@
 import datetime
 from django.db import models
 
-""" Class for Post News """
-
 
 class Post(models.Model):
+    """ Class for Post News """
     title = models.CharField(max_length=160)
     content = models.TextField()
     image = models.ImageField(null=True, blank=True, default=None)
@@ -18,13 +17,11 @@ class Post(models.Model):
     featured_until = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return "{}".format(self.name)
-
-
-""" Class for Categories """
+        return "{}".format(self.title)
 
 
 class Category(models.Model):
+    """ Class for Categories """
     name = models.CharField(max_length=50,unique=True)
     parent = models.ForeignKey("self", default=0)
 
@@ -32,11 +29,9 @@ class Category(models.Model):
         return "{}".format(self.name)
 
 
-""" Class for Tags """
-
-
 class Tags(models.Model):
+    """ Class for Tags """
     tag = models.CharField(max_length=50)
 
     def __str__(self):
-        return "{}".format(self.name)
+        return "{}".format(self.tag)

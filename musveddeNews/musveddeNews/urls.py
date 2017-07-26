@@ -20,5 +20,5 @@ from news.urls import urlpatterns as news_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url("^",include(news_urls)),
+    url("^", include(news_urls)),
 ]
