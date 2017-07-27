@@ -52,6 +52,7 @@ class PostAdmin(admin.ModelAdmin):
             {
                 "fields": [
                   ("title", "slug"),
+                  "content",
                   ("liked", "reported"),
                   "image",
                   ("categories", "tags"),
