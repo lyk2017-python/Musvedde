@@ -1,7 +1,12 @@
 from django.contrib import admin
-from news.models import Category,Post,Tags
+from news.models import Category, Post, Tags
 
 # Register your models here.
+
+
+class PostChildrenInline(admin.StackedInline):
+    model = Post
+    extra = 0
 
 
 @admin.register(Category)
@@ -16,6 +21,8 @@ class CategoryAdmin(admin.ModelAdmin):
         "name",
         "slug",
     ]
+
+    inlines = [PostChildrenInline]
 
 
 @admin.register(Post)
@@ -47,7 +54,7 @@ class PostAdmin(admin.ModelAdmin):
                   ("title", "slug"),
                   ("liked", "reported"),
                   "image",
-                  "categories",
+                  ("categories", "tags"),
                 ]
             }
         ),
@@ -55,13 +62,24 @@ class PostAdmin(admin.ModelAdmin):
             "Dates",
             {
                 "fields": [
-                    ("created_at", "featured_for")
+                    ("created_at", "featured_until")
                 ]
             }
         )
     ]
 
+
 @admin.register(Tags)
 class TagsAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        "tag",
+        "slug",
+    ]
+
+    search_fields = [
+        "tag",
+        "slug",
+    ]
+
+
 

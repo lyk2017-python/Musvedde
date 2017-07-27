@@ -41,3 +41,7 @@ class Tags(models.Model):
 
     def __str__(self):
         return "{}".format(self.tag)
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
