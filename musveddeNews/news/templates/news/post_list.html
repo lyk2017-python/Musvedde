@@ -9,14 +9,15 @@
 <h1 style="display:inline">Anasayfa</h1>
 <ul style="float:right">
 {% for cat in categories %}
-        <li style="float:left;list-style-type:none;margin-right:10px"><a href='{% url "category_view" slug=cat.slug %}' style="color:blue;text-decoration:none;">{{cat}}</a></li>
+        <li style="float:left;list-style-type:none;margin-right:10px"><a href='{% url "category_view" slug=cat.slug %}' style="color:blue;text-decoration:none;">{{cat|upper}}</a></li>
 {% endfor %}
 </ul>
 <div style="clear:both"></div>
 <hr>
 <ul>
 {% for obj in object_list %}
-    <li><a href='{% url "news_view" pk=obj.pk slug=obj.slug %}'>{{obj.title}}</a></li>
+    <li><a href='{% url "news_view" pk=obj.pk slug=obj.slug %}'>{{obj.title}}</a><p>{{obj.content|truncatechars:20}}</p>
+</li>
 {% endfor %}
 
 

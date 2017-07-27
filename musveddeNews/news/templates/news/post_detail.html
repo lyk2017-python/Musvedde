@@ -5,7 +5,9 @@
     <title>Title</title>
 </head>
 <body>
-<h1>{{ object.title }}</h1><br>
+<h1>{{ object.title|title}}</h1><br>
+
+<span style="float:right"><strong>Oluşturulma tarihi:</strong>{{object.created_at|date:"d-m-Y"}}</span>
 <hr>
 {{ object.content }}
 <ul>
