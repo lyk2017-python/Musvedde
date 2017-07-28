@@ -6,6 +6,7 @@ class Post(models.Model):
     """ Class for Post News """
     title = models.CharField(max_length=160)
     content = models.TextField()
+    source = models.URLField(null=True, blank=True, default=None)
     image = models.ImageField(null=True, blank=True, default=None)
     liked = models.IntegerField(default=0)
     reported = models.PositiveIntegerField(default=0)
@@ -22,9 +23,10 @@ class Post(models.Model):
 
 class Category(models.Model):
     """ Class for Categories """
-    name = models.CharField(max_length=50,unique=True)
-    parent = models.ForeignKey("self", default=0)
+    name = models.CharField(max_length=50, unique=True)
+    parent = models.ForeignKey("self", blank=True, null=True, default=None)
     slug = models.SlugField(max_length=50)
+    sub_level = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
         return "{}".format(self.name)

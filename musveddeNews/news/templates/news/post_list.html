@@ -19,8 +19,6 @@
     <li><a href='{% url "news_view" pk=obj.pk slug=obj.slug %}'>{{obj.title}}</a><p>{{obj.content|truncatechars:20}}</p>
 </li>
 {% endfor %}
-
-
 </ul>
 </body>
 </html>

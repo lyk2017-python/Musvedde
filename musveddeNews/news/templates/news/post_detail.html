@@ -12,7 +12,7 @@
 {{ object.content }}
 <ul>
 {% for tag in object.tags.all %}
-    <li>{{tag}}</li>
+    <li><a href='{% url "tag_view" slug=tag.slug %}'>{{tag}}</a></li>
 {% endfor %}
 </ul>
 </body>

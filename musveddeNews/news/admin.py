@@ -9,6 +9,11 @@ class PostChildrenInline(admin.StackedInline):
     extra = 0
 
 
+class CategoryChildrenInline(admin.StackedInline):
+    model = Category
+    extra = 0
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = [
@@ -22,7 +27,7 @@ class CategoryAdmin(admin.ModelAdmin):
         "slug",
     ]
 
-    inlines = [PostChildrenInline]
+    inlines = [PostChildrenInline, CategoryChildrenInline]
 
 
 @admin.register(Post)
