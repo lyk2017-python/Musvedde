@@ -1,19 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>{{ object.title|title}}</h1><br>
+{% extends "news/base.html" %}
+{% block body %}
+    <h1>{{ post.title|title}}</h1><br>
 
-<span style="float:right"><strong>Oluşturulma tarihi:</strong>{{object.created_at|date:"d-m-Y"}}</span>
-<hr>
-{{ object.content }}
-<ul>
-{% for tag in object.tags.all %}
-    <li><a href='{% url "tag_view" slug=tag.slug %}'>{{tag}}</a></li>
-{% endfor %}
-</ul>
-</body>
-</html>
+    <span style="float:right"><strong>Oluşturulma tarihi:</strong>{{post.created_at|date:"d-m-Y"}}</span>
+    <hr>
+    {{ post.content }}
+    <ul>
+    {% for tag in post.tags.all %}
+        <li><a href='{% url "tag_view" slug=tag.slug %}'>{{tag}}</a></li>
+    {% endfor %}
+    </ul>
+    <h1>Yorumlar</h1>
+    <hr>
+    <form action="." method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Ekle">
+    </form>
+    {% for com in post.comments_set.all %}
+        {{com.comment}}<br>
+    {% endfor %}
+{% endblock %}

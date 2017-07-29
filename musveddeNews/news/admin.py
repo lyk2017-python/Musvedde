@@ -1,5 +1,5 @@
 from django.contrib import admin
-from news.models import Category, Post, Tags
+from news.models import Category, Post, Tags, Comments
 
 # Register your models here.
 
@@ -88,4 +88,20 @@ class TagsAdmin(admin.ModelAdmin):
     ]
 
 
+@admin.register(Comments)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = [
+        "comment",
+        "post",
+        "created_at",
+        "reported_count",
+        "user_email",
+    ]
+
+    search_fields = [
+        "comment",
+        "post",
+        "user_name",
+        "user_email"
+    ]
 

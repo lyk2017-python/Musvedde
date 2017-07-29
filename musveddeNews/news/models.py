@@ -56,12 +56,19 @@ class Tags(models.Model):
 class Comments(models.Model):
     """ Class for Comments """
     comment = models.TextField()
-    post = models.ForeignKey(Post)
-    liked_count = models.PositiveIntegerField()
-    reported_count = models.PositiveSmallIntegerField()
+    post = models.ForeignKey("Post")
+    liked_count = models.PositiveIntegerField(default=0)
+    reported_count = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateField(default=datetime.datetime.now)
     user_name = models.CharField(max_length=50)
     user_email = models.EmailField()
+
+    def __str__(self):
+        return "{} - {}".format(self.comment,self.user_email)
+
+    class Meta:
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
 
 
 @receiver(pre_save, sender=Post)
@@ -73,8 +80,10 @@ def define_slug(sender, instance, *args, **kwargs):
             instance.slug = slugify(instance.name)
         elif hasattr(sender, "title"):
             instance.slug = slugify(instance.title)
+        elif hasattr(sender, "tag"):
+            instance.slug = slugify(instance.tag)
         else:
-            raise AttributeError("It needs name or title to define slug")
+            raise AttributeError("It needs name, tag or title to define slug")
     return instance
 
 

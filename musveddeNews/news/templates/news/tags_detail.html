@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Tag Detay</title>
-</head>
-<body>
+{% extends "news/base.html" %}
+
+{% block body %}
     {% for obj in object.post_set.all %}
-        {{obj}}<br>
+        <a href='{% url "news_view" slug=obj.slug pk=obj.pk %}'>{{obj}}</a><br>
     {% endfor %}
-</body>
-</html>
+{% endblock %}
+
+

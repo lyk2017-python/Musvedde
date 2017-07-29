@@ -1,24 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>{{object}}</h1>
-{% for sub_category in object.category_set.all %}
-    <li><a href='{% url "category_view" slug=sub_category.slug %}'>{{sub_category}}</a></li>
-{% endfor %}
-<hr>
-<ul>
-{% for spor in object.post_set.all %}
-    <li><a href='{% url "news_view" pk=spor.pk slug=spor.slug %}'>{{spor}}</a></li>
-{% endfor %}
-</ul>
-<form action="." method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Ekle"></input>
-</form>
-</body>
-</html>
+{% extends "news/base.html" %}
+
+{% block body %}
+    <h1>{{object}}</h1>
+    <ul>
+    {% for sub_category in object.category_set.all %}
+        <li><a href='{% url "category_view" slug=sub_category.slug %}'>{{sub_category}}</a></li>
+    {% endfor %}
+    </ul>
+    <hr>
+    <ul>
+    {% for spor in object.post_set.all %}
+        <li><a href='{% url "news_view" pk=spor.pk slug=spor.slug %}'>{{spor}}</a></li>
+    {% endfor %}
+    </ul>
+    <form action="." method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Ekle"></input>
+    </form>
+
+{% endblock %}

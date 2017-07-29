@@ -1,15 +1,14 @@
 {% extends "news/base.html" %}
+
 {% block body %}
-<h1 style="display:inline">Anasayfa</h1>
-<ul style="float:right">
-</ul>
-<div style="clear:both"></div>
-<hr>
-<ul>
-{% for obj in object_list %}
-    <li><a href='{% url "news_view" pk=obj.pk slug=obj.slug %}'>{{obj.title}}</a><p>{{obj.content|truncatechars:20}}</p>
-</li>
-{% endfor %}
-</ul>
-<a href='{% url "contact" %}'>İletişim</a>
+    <h1>Anasayfa</h1>
+    <div style="clear:both"></div>
+    <hr>
+    <ul>
+    {% for obj in object_list %}
+        <li><a href='{% url "news_view" pk=obj.pk slug=obj.slug %}'>{{obj.title}}</a><p>{{obj.content|truncatechars:20}}</p>
+    </li>
+    {% endfor %}
+    </ul>
+    <a href='{% url "contact" %}'>İletişim</a>
 {% endblock %}

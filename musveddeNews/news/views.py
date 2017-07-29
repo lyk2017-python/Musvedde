@@ -1,8 +1,8 @@
 from django.core.mail import send_mail
 from django.views import generic
-from .models import Post, Category, Tags
+from .models import Post, Category, Tags, Comments
 from django.http import Http404
-from news.forms import CategorizeNewsForm,ContactForm
+from news.forms import CategorizeNewsForm, ContactForm, CommentForm
 
 
 # Create your views here.
@@ -36,7 +36,7 @@ class CategoryView(generic.CreateView):
         kwargs = super().get_form_kwargs()
         if self.request.method in ["POST", "PUT"]:
             post_data = kwargs["data"].copy()
-            post_data["categories"] = [self.get_category()]
+            post_data["categories"] = self.get_category().id
             kwargs["data"] = post_data
         return kwargs
 
@@ -51,8 +51,30 @@ class HomeView(generic.ListView):
         return Post.objects.filter()
 
 
-class NewsView(generic.DetailView):
-    model = Post
+class NewsView(generic.CreateView):
+    form_class = CommentForm
+    template_name = "news/post_detail.html"
+    success_url = "."
+
+    def get_post(self):
+        post = Post.objects.filter(slug=self.kwargs["slug"])
+        if post.exists():
+            return post.get()
+        else:
+            raise Http404("Post not found")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.request.method in ["POST", "PUT"]:
+            comment = kwargs["data"].copy()
+            comment["post"] = self.get_post().id
+            kwargs["data"] = comment
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["post"] = self.get_post()
+        return context
 
 
 class TagsView(generic.DetailView):
@@ -79,6 +101,7 @@ class ContactFormView(generic.FormView):
             ["hamuha@musvedde.com"]
         )
         return super().form_valid(form)
+
 
 
 
