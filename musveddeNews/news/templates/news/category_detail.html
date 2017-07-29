@@ -6,6 +6,9 @@
 </head>
 <body>
 <h1>{{object}}</h1>
+{% for sub_category in object.category_set.all %}
+    <li><a href='{% url "category_view" slug=sub_category.slug %}'>{{sub_category}}</a></li>
+{% endfor %}
 <hr>
 <ul>
 {% for spor in object.post_set.all %}

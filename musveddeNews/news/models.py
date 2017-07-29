@@ -15,7 +15,7 @@ class Post(models.Model):
     reported = models.PositiveIntegerField(default=0)
     categories = models.ForeignKey("Category")
     tags = models.ManyToManyField("Tags")
-    slug = models.SlugField(max_length=160)
+    slug = models.SlugField(max_length=160, blank=True, unique=True)
     hidden = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=datetime.datetime.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -29,7 +29,7 @@ class Category(models.Model):
     """ Class for Categories """
     name = models.CharField(max_length=50, unique=True)
     parent = models.ForeignKey("self", blank=True, null=True, default=None)
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(max_length=50, blank=True, unique=True)
     sub_level = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
@@ -43,7 +43,7 @@ class Category(models.Model):
 class Tags(models.Model):
     """ Class for Tags """
     tag = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(max_length=50, blank=True, unique=True)
 
     def __str__(self):
         return "{}".format(self.tag)
@@ -53,8 +53,20 @@ class Tags(models.Model):
         verbose_name_plural = "Tags"
 
 
+class Comments(models.Model):
+    """ Class for Comments """
+    comment = models.TextField()
+    post = models.ForeignKey(Post)
+    liked_count = models.PositiveIntegerField()
+    reported_count = models.PositiveSmallIntegerField()
+    created_at = models.DateField(default=datetime.datetime.now)
+    user_name = models.CharField(max_length=50)
+    user_email = models.EmailField()
+
 
 @receiver(pre_save, sender=Post)
+@receiver(pre_save, sender=Category)
+@receiver(pre_save, sender=Tags)
 def define_slug(sender, instance, *args, **kwargs):
     if not instance.slug:
         if hasattr(sender, "name"):
