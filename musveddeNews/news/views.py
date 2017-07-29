@@ -57,7 +57,7 @@ class NewsView(generic.CreateView):
     success_url = "."
 
     def get_post(self):
-        post = Post.objects.filter(slug=self.kwargs["slug"])
+        post = Post.objects.filter(slug=self.kwargs["slug"], hidden=False)
         if post.exists():
             return post.get()
         else:

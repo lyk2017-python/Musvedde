@@ -58,7 +58,8 @@ class Comments(models.Model):
     comment = models.TextField()
     post = models.ForeignKey("Post")
     liked_count = models.PositiveIntegerField(default=0)
-    reported_count = models.PositiveSmallIntegerField(default=0)
+    reported = models.PositiveSmallIntegerField(default=0)
+    hidden = models.BooleanField(default=False)
     created_at = models.DateField(default=datetime.datetime.now)
     user_name = models.CharField(max_length=50)
     user_email = models.EmailField()
@@ -88,6 +89,7 @@ def define_slug(sender, instance, *args, **kwargs):
 
 
 @receiver(pre_save, sender=Post)
+@receiver(pre_save, sender=Comments)
 def auto_hidden(sender, instance, *args, **kwargs):
     if instance.reported >= 10:
         instance.hidden = True

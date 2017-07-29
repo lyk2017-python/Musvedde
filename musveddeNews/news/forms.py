@@ -52,7 +52,8 @@ class CommentForm(forms.ModelForm):
         exclude = [
             "id",
             "created_at",
-            "reported_count",
+            "reported",
+            "hidden",
             "liked_count",
         ]
         widgets = {

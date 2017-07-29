@@ -12,6 +12,11 @@
     {% for spor in object.post_set.all %}
         <li><a href='{% url "news_view" pk=spor.pk slug=spor.slug %}'>{{spor}}</a></li>
     {% endfor %}
+    {% for sub_category in object.category_set.all %}
+        {% for subnews in sub_category.post_set.all %}
+        <li><a href='{% url "news_view" slug=subnews.slug pk=subnews.pk %}'>{{subnews}}</a></li>
+        {% endfor %}
+    {% endfor %}
     </ul>
     <form action="." method="POST">
         {% csrf_token %}

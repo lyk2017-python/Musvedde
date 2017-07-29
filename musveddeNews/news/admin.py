@@ -94,7 +94,8 @@ class CategoryAdmin(admin.ModelAdmin):
         "comment",
         "post",
         "created_at",
-        "reported_count",
+        "hidden",
+        "reported",
         "user_email",
     ]
 
@@ -103,5 +104,12 @@ class CategoryAdmin(admin.ModelAdmin):
         "post",
         "user_name",
         "user_email"
+    ]
+
+    list_filter = [
+        "created_at",
+        "reported",
+        "liked_count",
+
     ]
 
