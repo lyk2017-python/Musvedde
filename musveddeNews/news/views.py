@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 from django.views import generic
 from .models import Post, Category, Tags, Comments
 from django.http import Http404
-from news.forms import CategorizeNewsForm, ContactForm, CommentForm
+from news.forms import CategorizeNewsForm, ContactForm, CommentForm, NewsForm
 
 
 # Create your views here.
@@ -46,9 +46,15 @@ class CategoryView(generic.CreateView):
         return context
 
 
-class HomeView(generic.ListView):
-    def get_queryset(self):
-        return Post.objects.filter()
+class HomeView(generic.CreateView):
+    form_class = NewsForm
+    template_name = "news/post_list.html"
+    success_url = "."
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["posts"] = Post.objects.filter(hidden=False)
+        return context
 
 
 class NewsView(generic.CreateView):

@@ -5,10 +5,15 @@
     <div style="clear:both"></div>
     <hr>
     <ul>
-    {% for obj in object_list %}
+    {% for obj in posts %}
         <li><a href='{% url "news_view" pk=obj.pk slug=obj.slug %}'>{{obj.title}}</a><p>{{obj.content|truncatechars:20}}</p>
     </li>
     {% endfor %}
     </ul>
+    <form action="." method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Ekle">
+    </form>
     <a href='{% url "contact" %}'>İletişim</a>
 {% endblock %}
