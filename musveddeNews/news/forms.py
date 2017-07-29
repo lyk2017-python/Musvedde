@@ -9,7 +9,17 @@ class CategorizeNewsForm(forms.ModelForm):
         exclude = [
             "id",
             "reported",
+            "created_at",
+            "featured_until",
+            "liked",
+            "hidden"
         ]
         widgets = {
             "categories": HiddenInput()
-}
+        }
+
+
+class ContactForm(forms.Form):
+    email = forms.EmailField()
+    subject = forms.CharField(max_length=160)
+    message = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))

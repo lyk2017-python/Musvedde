@@ -1,16 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Anasayfa</title>
-
-</head>
-<body>
+{% extends "news/base.html" %}
+{% block body %}
 <h1 style="display:inline">Anasayfa</h1>
 <ul style="float:right">
-{% for cat in categories %}
-        <li style="float:left;list-style-type:none;margin-right:10px"><a href='{% url "category_view" slug=cat.slug %}' style="color:blue;text-decoration:none;">{{cat|upper}}</a></li>
-{% endfor %}
 </ul>
 <div style="clear:both"></div>
 <hr>
@@ -20,5 +11,5 @@
 </li>
 {% endfor %}
 </ul>
-</body>
-</html>
+<a href='{% url "contact" %}'>İletişim</a>
+{% endblock %}

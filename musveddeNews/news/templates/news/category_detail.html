@@ -12,5 +12,10 @@
     <li><a href='{% url "news_view" pk=spor.pk slug=spor.slug %}'>{{spor}}</a></li>
 {% endfor %}
 </ul>
+<form action="." method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Ekle"></input>
+</form>
 </body>
 </html>

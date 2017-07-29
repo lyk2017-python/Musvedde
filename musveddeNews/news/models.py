@@ -1,5 +1,8 @@
 import datetime
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.template.defaultfilters import slugify
 
 
 class Post(models.Model):
@@ -13,6 +16,7 @@ class Post(models.Model):
     categories = models.ForeignKey("Category")
     tags = models.ManyToManyField("Tags")
     slug = models.SlugField(max_length=160)
+    hidden = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=datetime.datetime.now)
     updated_at = models.DateTimeField(auto_now=True)
     featured_until = models.DateTimeField(default=None, blank=True, null=True)
@@ -47,3 +51,25 @@ class Tags(models.Model):
     class Meta:
         verbose_name = "Tag"
         verbose_name_plural = "Tags"
+
+
+
+@receiver(pre_save, sender=Post)
+def define_slug(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        if hasattr(sender, "name"):
+            instance.slug = slugify(instance.name)
+        elif hasattr(sender, "title"):
+            instance.slug = slugify(instance.title)
+        else:
+            raise AttributeError("It needs name or title to define slug")
+    return instance
+
+
+@receiver(pre_save, sender=Post)
+def auto_hidden(sender, instance, *args, **kwargs):
+    if instance.reported >= 10:
+        instance.hidden = True
+    return instance
+
+

@@ -1,7 +1,8 @@
+from django.core.mail import send_mail
 from django.views import generic
 from .models import Post, Category, Tags
 from django.http import Http404
-from news.forms import CategorizeNewsForm
+from news.forms import CategorizeNewsForm,ContactForm
 
 
 # Create your views here.
@@ -21,7 +22,7 @@ class PostCreateView(generic.CreateView):
 
 class CategoryView(generic.CreateView):
     form_class = CategorizeNewsForm
-    template_name = "news/category_create.html"
+    template_name = "news/category_detail.html"
     success_url = "."
 
     def get_category(self):
@@ -55,14 +56,34 @@ class HomeView(generic.ListView):
         return context
 
 
-class CategoryView(generic.DetailView):
-    model = Category
-
-
 class NewsView(generic.DetailView):
     model = Post
 
 
 class TagsView(generic.DetailView):
     model = Tags
+
+
+class ContactFormView(generic.FormView):
+    form_class = ContactForm
+    template_name = "news/contact.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        from django.conf import settings
+        send_mail(
+            "Musvedde ContactForm : {}".format(data["subject"]),
+            ("You have a notification\n"
+             "---\n"
+             "{}\n"
+             "---\n"
+             "email={}\n"
+             "ip={}").format(data["message"], data["email"], self.request.META["REMOTE_ADDR"]),
+            settings.DEFAULT_FROM_EMAIL,
+            ["hamuha@musvedde.com"]
+        )
+        return super().form_valid(form)
+
+
 
