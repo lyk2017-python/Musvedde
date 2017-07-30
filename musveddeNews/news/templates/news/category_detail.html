@@ -2,6 +2,8 @@
 
 {% block body %}
     <h1>{{object}}</h1>
+
+    <h4>Alt Kategoriler</h4>
     <ul>
     {% for sub_category in object.category_set.all %}
         <li><a href='{% url "category_view" slug=sub_category.slug %}'>{{sub_category}}</a></li>
