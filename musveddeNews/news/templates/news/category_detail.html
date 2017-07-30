@@ -18,6 +18,8 @@
         {% endfor %}
     {% endfor %}
     </ul>
+    <h1>Haber Ekle</h1>
+    <hr>
     <form action="." method="POST">
         {% csrf_token %}
         {{form.as_p}}

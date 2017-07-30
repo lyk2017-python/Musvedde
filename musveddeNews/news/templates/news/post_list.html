@@ -2,6 +2,7 @@
 
 {% block body %}
     <h1>Anasayfa</h1>
+    <a style="float:right" href='{% url "contact" %}'>İletişim</a>
     <div style="clear:both"></div>
     <hr>
     <ul>
@@ -10,10 +11,11 @@
     </li>
     {% endfor %}
     </ul>
+    <h1>Haber Ekle</h1>
+    <hr>
     <form action="." method="POST">
         {% csrf_token %}
         {{form.as_p}}
         <input type="submit" value="Ekle">
     </form>
-    <a href='{% url "contact" %}'>İletişim</a>
 {% endblock %}
