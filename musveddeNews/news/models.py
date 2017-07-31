@@ -15,6 +15,7 @@ class Post(models.Model):
     reported = models.PositiveIntegerField(default=0)
     categories = models.ForeignKey("Category")
     tags = models.ManyToManyField("Tags")
+    read = models.PositiveIntegerField(default=0)
     slug = models.SlugField(max_length=160, blank=True, unique=True)
     hidden = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=datetime.datetime.now)
