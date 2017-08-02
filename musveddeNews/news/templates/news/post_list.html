@@ -1,6 +1,30 @@
 {% extends "news/base.html" %}
-
+{% load static %}
 {% block body %}
+
+    <section id="intro" class="main intro-section">
+        <div class="container-fluid">
+            <div class="row">
+                {% for obj in posts %}
+                    {% if forloop.counter0 != 0 %}
+                    {% if forloop.counter0|divisibleby:4 %}
+            </div>
+            <div class="row">
+                    {% endif %}
+                    {% endif %}
+                <div class="panel panel-default col-md-3">
+                    <div class="panel-heading">
+                        <h4>Head</h4>
+                    </div>
+                    <div class="panel-body">
+                        <span>{{obj.content}}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </section>
     <!--<a style="float:right" href='{% url "contact" %}'>İletişim</a>
     <div style="clear:both"></div>
     <hr>
