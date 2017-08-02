@@ -17,7 +17,7 @@ $(".main").on("click", function(){
     }
 });
 
-jQuery('#news-demo').slippry({
+$('#news-demo').slippry({
   // general elements & wrapper
   slippryWrapper: '<div class="sy-box news-slider" />', // wrapper to wrap everything, including pager
   elements: 'article', // elments cointaining slide content

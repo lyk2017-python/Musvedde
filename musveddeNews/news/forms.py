@@ -54,7 +54,10 @@ class CommentForm(forms.ModelForm):
             "liked_count",
         ]
         widgets = {
-            "post": HiddenInput()
+            "post": HiddenInput(),
+            "user_name": forms.TextInput(attrs={'class': 'form-control'}),
+            "user_email": forms.TextInput(attrs={'class': 'form-control'}),
+            "comment": forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'style': 'resize:none'}),
         }
 
 

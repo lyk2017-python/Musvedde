@@ -1,31 +1,19 @@
 {% extends "news/base.html" %}
-{% load static %}
 {% block body %}
 
-    <section id="intro" class="main intro-section">
-        <div class="container-fluid">
-            <div class="row">
-                {% for obj in posts %}
-                    {% if forloop.counter0 != 0 %}
-                    {% if forloop.counter0|divisibleby:4 %}
-            </div>
-            <div class="row">
-                    {% endif %}
-                    {% endif %}
-                <div class="panel panel-default col-md-3">
-                    <div class="panel-heading">
-                        <h4>Head</h4>
-                    </div>
-                    <div class="panel-body">
-                        <span>{{obj.content}}</span>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-        </div>
-    </section>
-    <!--<a style="float:right" href='{% url "contact" %}'>İletişim</a>
+<section id="news-demo">
+    {% for obj in posts %}
+    <article>
+      <div class="text-content">
+        <h2>{{obj.title}}</h2>
+        <p>{{obj.content|truncatechars:400}}</p>
+        <a href="{% url "news_view" pk=obj.pk slug=obj.slug %}" class="button-link read-more btn btn-primary">Devamını Oku</a>
+      </div>
+      <div class="image-content"><img src="http://slippry.com/assets/img/image-3.jpg" alt="demo1_1"></div>
+    </article>
+    {% endfor %}
+</section>
+ <!--<a style="float:right" href='{% url "contact" %}'>İletişim</a>
     <div style="clear:both"></div>
     <hr>
     <ul>

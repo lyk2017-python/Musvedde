@@ -1,35 +1,58 @@
 {% extends "news/base.html" %}
+{% load static %}
 {% block body %}
-    <h1>{{ post.title|title}}</h1><br>
+    <div class="container">
+        <div class="jumbotron" style="overflow:auto">
+            <em style="float:right">Okunma: {{"0"}}</em>
+            <h2>{{ post.title|title}}</h2>
+            <span style="float:right"><strong>Yazar:</strong>Anon <strong>Tarih:</strong>{{post.created_at|date:"d-m-Y"}}</span>
+            <hr>
+            <img src="{% static "news/img/default.jpg" %}" alt="{{ post.title|title}}" height="300" width="300" style="float:right;" class="img-responsive">
+            {{ post.content }}
+            <div class="clearfix"></div>
+            <button class="btn btn-danger" style="float:right;margin:5px"><i class="glyphicon glyphicon-alert"></i> Şikayet Et {{"(1)"}}</button>
+            <button class="btn btn-success" style="float:right;margin:5px"><i class="glyphicon glyphicon-thumbs-up"></i> Beğen {{"(1)"}}</button>
 
-    <span style="float:right"><strong>Oluşturulma tarihi:</strong>{{post.created_at|date:"d-m-Y"}}</span>
-    <hr>
-    <span class="glyphicon glyphicon-asterisk"></span>
-    <i class="fa fa-newspaper-o" aria-hidden="true">{{ post.content }}</i>
-
-<div class="well pull-right">
-    <h1>Tags</h1>
-      <ul>
-        {% for tag in post.tags.all %}
-            <li><a href='{% url "tag_view" slug=tag.slug %}'>{{tag}}</a></li>
-        {% endfor %}
-      </ul>
-</div>
-    <div class="clearfix"></div>
-    <h1>Yorumlar</h1>
-    <div class="well">{% for com in post.comments_set.all %}
-        <span class="text-warning">{{com.user_name}}</span><span class="glyphicon glyphicon-chevron-right"></span>{{com.comment}} <span class="pull-right">
-            {{com.created_at|date:"d-m-Y"}}
-        </span><br>
-        {% empty %}
-            <h5 class="text-danger">Bu habere ait yorum bulunamadı!</h5>
-    {% endfor %}
+        </div>
+        <br>
+        <div class="panel panel-default">
+              <div class="panel-heading">Etiketler</div>
+              <div class="panel-body">
+                  <ul style="overflow:auto">
+                      {% for tag in post.tags.all %}
+                        <li style="list-style-type:none;float:left;padding:5px;border:1px solid #006666;margin:5px;border-radius:5px;background-color:#669999" class="tag"><a href='{% url "tag_view" slug=tag.slug %}' style='font-family: "Times New Roman", Times, serif;color:white;text-decoration:none;'>{{tag}}</a></li>
+                      {% endfor %}
+                  </ul>
+              </div>
+        </div>
+        <div class="panel panel-default">
+              <div class="panel-heading">Yorumlar</div>
+              <div class="panel-body">
+                  <ul style="overflow:auto">
+                      {% for com in post.comments_set.all %}
+                        <img src="{% static "news/img/profile.png" %}" alt="{{com.user_name}}" height:"50" width="50" class="img-thumbnail">
+                        <span class="text-warning">{{com.user_name}}</span>
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        {{com.comment}}
+                        <span class="pull-right">
+                            {{com.created_at|date:"d-m-Y"}}
+                        </span><br>
+                        <hr>
+                        {% empty %}
+                            <div class="alert alert-danger"><h5 class="text-danger">Bu habere ait yorum bulunamadı!</h5></div>
+                      {% endfor %}
+                  </ul>
+              </div>
+        </div>
+        <div class="panel panel-default">
+              <div class="panel-heading">Yorum Ekle</div>
+              <div class="panel-body">
+                  <form action="." method="POST">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input class="btn btn-primary" type="submit" value="Ekle">
+                  </form>
+              </div>
+        </div>
     </div>
-    <hr>
-    <h1>Yorum Ekle</h1>
-    <form action="." method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Ekle">
-    </form>
 {% endblock %}
