@@ -14,7 +14,6 @@
 
         .tags_content h3 {
           font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
-          margin-bottom:15px
         }
 
         .tags_content li img {
@@ -33,24 +32,30 @@
           margin-bottom:5px
         }
 
-        .tags_content li:hover {
+        .tags_content .col-md-6:hover {
           background: #eee;
         }
     </style>
-    <h1>"{{object}}" ile ilgili haberler</h1>
-    <hr>
-    <div class="col-md-6 tags_content">
-        <ul>
-    {% for obj in object.post_set.all %}
-    <li>
-        <p style="float:right;margin-left:10px"><strong>Tarih:</strong> Dün</p>
-        <p style="float:right"><strong>Yazar:</strong> anon</p><br>
-        <h3 style="display:inline"><a href='{% url "news_view" slug=obj.slug pk=obj.pk %}'>{{obj}}</a></h3><br>
-        <img src="{% static "news/img/default.jpg" %}" height="50" width="50" />
-      {{obj.content|truncatechars:100}}
-    </li>
-    {% endfor %}
-        </ul>
+    <div class="container">
+        <h1>"{{object}}" ile ilgili haberler</h1>
+        <hr>
+        <div class="tags_content">
+            <div class="row">
+        {% for obj in object.post_set.all %}
+            {% if forloop.counter0|divisibleby:"2" %}
+            </div>
+            <div class="row">
+            {% endif %}
+            <div class="col-md-6" style="height:150px">
+            <p style="float:right;margin-left:10px"><strong>Tarih:</strong> Dün</p>
+            <p style="float:right"><strong>Yazar:</strong> anon</p><br>
+            <h3 style="display:inline"><a href='{% url "news_view" slug=obj.slug pk=obj.pk %}'>{{obj|truncatechars:50}}</a></h3><br>
+            <img src="{% static "news/img/default.jpg" %}" height="50" width="50" />
+          {{obj.content|truncatechars:100}}
+            </div>
+        {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}
 
