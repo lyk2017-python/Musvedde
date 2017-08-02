@@ -5,21 +5,6 @@ from django.http import Http404
 from news.forms import CategorizeNewsForm, ContactForm, CommentForm, NewsForm
 
 
-# Create your views here.
-
-class PostCreateView(generic.CreateView):
-    model = Post
-    success_url = "/"
-    fields = [
-        "title",
-        "created_at",
-        "featured_until",
-        "image",
-        "categories",
-        "slug",
-    ]
-
-
 class CategoryView(generic.CreateView):
     form_class = CategorizeNewsForm
     template_name = "news/category_detail.html"
@@ -80,6 +65,9 @@ class NewsView(generic.CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["post"] = self.get_post()
+        if self.request.method == "GET":
+            context["post"].read += 1
+            context["post"].save()
         return context
 
 
@@ -107,7 +95,3 @@ class ContactFormView(generic.FormView):
             ["hamuha@musvedde.com"]
         )
         return super().form_valid(form)
-
-
-
-

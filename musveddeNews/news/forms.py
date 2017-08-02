@@ -22,7 +22,7 @@ class NewsForm(forms.ModelForm):
             )
         cleaned_data["tags"] = tags
         return cleaned_data
-
+    
     class Meta:
         model = Post
         exclude = [
