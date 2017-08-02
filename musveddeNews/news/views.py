@@ -2,8 +2,8 @@ from django.core.mail import send_mail
 from django.views import generic
 from .models import Post, Category, Tags, Comments
 from django.http import Http404
-from news.forms import CategorizeNewsForm, ContactForm, CommentForm, NewsForm
-
+from news.forms import CategorizeNewsForm, ContactForm, CommentForm, NewsForm, CustomUserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class CategoryView(generic.CreateView):
     form_class = CategorizeNewsForm
@@ -71,6 +71,7 @@ class NewsView(generic.CreateView):
         return context
 
 
+
 class TagsView(generic.DetailView):
     model = Tags
 
@@ -92,6 +93,16 @@ class ContactFormView(generic.FormView):
              "email={}\n"
              "ip={}").format(data["message"], data["email"], self.request.META["REMOTE_ADDR"]),
             settings.DEFAULT_FROM_EMAIL,
-            ["hamuha@musvedde.com"]
+            ["hvarmis21@gmail.com"]
         )
+        return super().form_valid(form)
+
+
+class RegistratitonView(generic.FormView):
+    form_class = CustomUserCreationForm
+    template_name = "news/signup.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        form.save()
         return super().form_valid(form)

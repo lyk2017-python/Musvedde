@@ -17,8 +17,11 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from news.urls import urlpatterns as news_urls
 
+from django.contrib.auth import views as view_auth
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/login/$', view_auth.LoginView.as_view(), name='login'),
+    url(r'^accounts/logout/$', view_auth.LogoutView.as_view(), name='logout'),
     url("^", include(news_urls)),
 ]

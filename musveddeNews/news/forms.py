@@ -1,7 +1,7 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm, get_user_model
 from django.forms import HiddenInput
 from news.models import Post, Tags, Comments
-
 
 class NewsForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(queryset=Tags.objects.all(), required=False)
@@ -76,3 +76,8 @@ class CategorizeNewsForm(NewsForm):
         widgets = {
             "categories": HiddenInput()
         }
+
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = get_user_model()
