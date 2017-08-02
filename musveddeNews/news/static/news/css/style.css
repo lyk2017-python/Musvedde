@@ -47,9 +47,9 @@ nav.main{
   .sidenav a {font-size: 18px;}
 }
 
-/* News */
 .news-slider {
-  /* Style the actual content */
+  width:75% !important;
+  margin:0px auto;
 }
 .news-slider .text-content {
   position: absolute;
@@ -58,7 +58,7 @@ nav.main{
   right: 0;
   background-color: rgba(255, 255, 255, 0.9);
   padding: 1em;
-  width: 30%;
+  width: 45%;
   height: 100%;
 }
 .news-slider .text-content h2 {
@@ -99,4 +99,8 @@ nav.main{
   text-decoration: none;
   display: block;
   color: #222;
+}
+
+.tag:hover{
+    background-color:#006666!important;
 }
