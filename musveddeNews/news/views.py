@@ -35,6 +35,8 @@ class CategoryView(generic.CreateView):
         context["object"] = self.get_category()
         return context
 
+class SearchView(generic.ListView):
+    model = Post
 
 class HomeView(generic.CreateView):
     form_class = NewsForm
@@ -45,6 +47,20 @@ class HomeView(generic.CreateView):
         context = super().get_context_data(**kwargs)
         context["posts"] = Post.objects.filter(hidden=False)
         return context
+
+
+class NewsSearchingView(SearchView):
+    template_name = "news/search.html"
+
+
+    def get_queryset(self):
+        result = super(SearchView, self).get_queryset()
+
+        query = self.request.GET.get("q")
+        if query:
+            result = result.filter(title__icontains=query)
+
+        return result
 
 
 class NewsView(generic.CreateView):

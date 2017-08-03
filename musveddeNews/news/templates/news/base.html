@@ -16,8 +16,8 @@
 
 </head>
 <body>
-
-        <nav class="navbar navbar-default main">
+    <div class="main">
+        <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -32,12 +32,14 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-                     </form>
+                    <form  action="{% url 'list-search' %}" method="get" accept-charset="utf-8">
+                            <div class="form-group">
+
+                                <input  name="q" type="text" placeholder="Öneri Ara!">
+
+                            </div>
+                            <button type="submit">Ara</button>
+                        </form>
                     {% if not request.user.is_authenticated %}
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href='{% url "login" %}'>Giriş Yap</a></li>
