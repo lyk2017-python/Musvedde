@@ -28,6 +28,8 @@
               </div>
               <p> <a href='{% url "news_view" pk=catpost.pk slug=catpost.slug %}' role="button" data-toggle="modal" class="btn btn-success btn-large">Devamını Oku </a> </p>
             </div>
+            {% empty %}
+                <div style="margin-top:25px" class="alert alert-danger"><h5 class="text-danger">Bu kategoriye ait haber bulunamadı!</h5></div>
     {% endfor %}
     {% for sub_category in object.category_set.all %}
         {% for subnews in sub_category.post_set.all %}

@@ -12,6 +12,8 @@
     <link href='{% static "news/css/bootstrap-responsive.css" %}' rel="stylesheet" media="screen">
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='{% static "news/css/hosting.css" %}' rel="stylesheet" media="all">
+    <link rel="stylesheet" href='{% static "news/awesome/css/font-awesome.min.css" %}'>
+
 </head>
 <body>
 
@@ -46,22 +48,23 @@
             </div><!-- /.container-fluid -->
         </nav>
         <div id="mySideNav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a><br>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <div class="col-md-6">
                 <img src='{% static "news/img/profile.png" %}' alt="profil" class="img-circle" width="100" height="100" style="border:2px solid #fff;position:absolute;top:10px;">
             </div>
-            <div class="col-md-6" style="margin-bottom:100px">
             {% if request.user.is_authenticated %}
-                <span style="color:#fff;margin-bottom:20px">{{ request.user.username|title }}</span>
+            <div class="col-md-6" style="margin-bottom: 50px;">
+                <span style="color:#fff;margin-bottom:20px">{{ request.user.username|title }} YAVAŞ</span>
                 <a href="" style="margin-bottom:0px!important"><small style="font-size:15px">+ Profil</small></a>
                 <a href='{% url "logout" %}'><small style="font-size:15px">+ Çıkış Yap</small></a>
             {% else %}
-                  <span style="color:#fff;margin-bottom:20px">{{ "Ziyaretçi"|title }}</span>
+                <div class="col-md-6" style="margin-bottom: 120px;">
+                  <span style="color:#fff;">{{ "Ziyaretçi"|title }}</span>
             {% endif %}
             </div>
             <ul>
                 {% for cat in categories %}
-                <li style="list-style-type:none;margin-right:30px"><a href='{% url "category_view" slug=cat.slug %}' style="color:#fff;text-decoration:none;"><i class="glyphicon glyphicon-home text-danger"></i> {{cat|title}}</a></li>
+                <li style="list-style-type:none;margin-right:30px"><a href='{% url "category_view" slug=cat.slug %}' style="color:#fff;text-decoration:none;"><i class="fa {{cat.icon}}"></i> {{cat|title}}</a></li>
                 {% endfor %}
             </ul>
         </div>

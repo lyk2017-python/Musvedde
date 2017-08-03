@@ -12,6 +12,7 @@ class PostChildrenInline(admin.StackedInline):
 class CategoryChildrenInline(admin.StackedInline):
     model = Category
     extra = 0
+    fk_name = "parent"
 
 
 @admin.register(Category)

@@ -7,7 +7,7 @@
     <article>
       <div class="text-content">
         <h2>{{obj.title}}</h2>
-        <p>{{obj.content|truncatechars:400}}</p>
+        <p>{{obj.content|truncatechars:300}}</p>
         <a href="{% url "news_view" pk=obj.pk slug=obj.slug %}" class="button-link read-more btn btn-primary">Devamını Oku</a>
       </div>
       <div class="image-content"><img src="http://slippry.com/assets/img/image-3.jpg" alt="demo1_1"></div>

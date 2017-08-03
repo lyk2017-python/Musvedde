@@ -29,8 +29,11 @@ class Post(models.Model):
 class Category(models.Model):
     """ Class for Categories """
     name = models.CharField(max_length=50, unique=True)
-    parent = models.ForeignKey("self", blank=True, null=True, default=None)
+    parent = models.ForeignKey("self", blank=True, null=True, related_name="children")
+    super_parent = models.ForeignKey("self", blank=True, null=True, related_name="super_children")
     slug = models.SlugField(max_length=50, blank=True, unique=True)
+    color = models.CharField(max_length=6, blank=True, null=True, default=None)
+    icon = models.CharField(max_length=150, blank=True, null=True, default=None)
     sub_level = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):

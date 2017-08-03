@@ -3,7 +3,7 @@
 {% block body %}
     <div class="container">
         <div class="jumbotron" style="overflow:auto">
-            <em style="float:right">Okunma: {{"0"}}</em>
+            <em style="float:right">Okunma: {{post.read}}</em>
             <h2>{{ post.title|title}}</h2>
             <span style="float:right"><strong>Yazar:</strong>Anon <strong>Tarih:</strong>{{post.created_at|date:"d-m-Y"}}</span>
             <hr>
@@ -11,8 +11,8 @@
             {{ post.content }}
             <div class="clearfix"></div>
              {% if request.user.is_authenticated %}
-            <button class="btn btn-danger" style="float:right;margin:5px"><i class="glyphicon glyphicon-alert"></i> Şikayet Et {{"(1)"}}</button>
-            <button id="like" onclick="like({{ post.id }})" class="btn {% if liked %}btn-danger{% else %}btn-success{% endif %}" style="float:right;margin:5px">
+            <button class="btn btn-sm btn-danger" style="float:right;margin:5px"><i class="glyphicon glyphicon-alert"></i> Şikayet Et {{"(1)"}}</button>
+            <button id="like" onclick="like({{ post.id }})" class="btn btn-sm {% if liked %}btn-success{% else %}btn-primary{% endif %}" style="float:right;margin:5px">
                 <i class="glyphicon glyphicon-thumbs-up"></i>
                 <span id="likeText">
                     {% if liked %}
@@ -78,10 +78,10 @@
             success:function (data) {
                 console.log(data);
                 if(data["status"] == "added"){
-                    $("#like").removeClass("btn-primary").addClass("btn-danger");
+                    $("#like").removeClass("btn-default").addClass("btn-success");
                     $("#likeText").text("Beğenmekten Vazgeç");
                 }else if(data["status"] == "deleted"){
-                    $("#like").removeClass("btn-danger").addClass("btn-primary");
+                    $("#like").removeClass("btn-success").addClass("btn-primary");
                     $("#likeText").text("Beğen");
                 }
                 $("#likeCount").text("("+data["likes"]+")");
