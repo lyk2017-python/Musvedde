@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, get_user_model
 from django.forms import HiddenInput
 from news.models import Post, Tags, Comments
 
+
 class NewsForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(queryset=Tags.objects.all(), required=False)
     tag_names = forms.CharField(required=False)

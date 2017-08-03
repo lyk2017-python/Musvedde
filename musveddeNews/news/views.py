@@ -71,14 +71,13 @@ class NewsView(generic.CreateView):
         return context
 
 
-
 class TagsView(generic.DetailView):
     model = Tags
 
 
 class ContactFormView(generic.FormView):
     form_class = ContactForm
-    template_name = "news/contact.html"
+    template_name = "news/base.html"
     success_url = "/"
 
     def form_valid(self, form):

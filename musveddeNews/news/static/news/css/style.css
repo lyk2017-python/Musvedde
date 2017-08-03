@@ -109,7 +109,6 @@ nav.main{
     background-color: #3c3d41;
 	padding: 60px 40px;
 	color: rgba(255,255,255,1.00);
-	margin-bottom: 20px;
 	border-bottom-right-radius: 6px;
 	border-top-left-radius: 0px;
 	border-bottom-left-radius: 6px;
@@ -155,4 +154,8 @@ nav.main{
 
 @media (min-width: 768px) {
 	.footer-bs .footer-nav, .footer-bs .footer-social, .footer-bs .footer-ns { border-left:solid 1px rgba(255,255,255,0.10); }
+}
+
+.subcat:hover{
+    background-color:#003300!important;
 }
