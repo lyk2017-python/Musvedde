@@ -2,40 +2,70 @@
 {% load static %}
 {% block body %}
 
-<section id="news-demo">
-    {% for obj in posts %}
-    <article>
-      <div class="text-content">
-        <h2>{{obj.title}}</h2>
-        <p>{{obj.content|truncatechars:300}}</p>
-        <a href="{% url "news_view" pk=obj.pk slug=obj.slug %}" class="button-link read-more btn btn-primary">Devamını Oku</a>
-      </div>
-      <div class="image-content"><img src="http://slippry.com/assets/img/image-3.jpg" alt="demo1_1"></div>
-    </article>
-    {% endfor %}
-</section>
+<div class="row">
+  <div class="col-md-8">
+  <section id="news-demo">
+      {% for obj in posts %}
+      <article>
+        <div class="text-content">
+          <h2>{{obj.title}}</h2>
+          <p>{{obj.content|truncatechars:160}}</p>
+          <a href="{% url "news_view" pk=obj.pk slug=obj.slug %}" class="button-link read-more btn btn-primary">Devamını Oku</a>
+        </div>
+        <div class="image-content"><img src="{{obj.image.url}}" width="675" height="355" alt="demo1_1"></div>
+      </article>
+      {% endfor %}
+  </section>
+  </div>
+
+  <div class="col-md-4">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">Yorum</a></li>
+    <li><a data-toggle="tab" href="#menu1">Beğeni</a></li>
+    <li><a data-toggle="tab" href="#menu2">Etiket</a></li>
+    <li><a data-toggle="tab" href="#menu3">Okunma</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <h3>En çok yorum alanlar</h3>
+
+    </div>
+    <div id="menu1" class="tab-pane fade">
+      <h3>En çok beğenilenler</h3>
+
+    </div>
+    <div id="menu2" class="tab-pane fade">
+      <h3>En çok etiketi olanlar</h3>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+      <h3>En çok okunanlar</h3>
+    </div>
+  </div>
+  </div>
+</div>
 
 <div class="container">  <!-- Contaner Starts -->
-<div class="row-fluid">
-<!-- Row2 start -->
-  {% for post in posts %}
-<div class="span3 PlanPricing template4">  <!-- Price template4 Starts -->
-  <div class="planName"> <span class="price" style="background-color:#{{post.categories.color}}!important">{{post.categories|title}}</span>
-    <h3>{{post.title}}</h3>
-    <p>{{post.created_at}}</p>
-  </div>
-  <div class="planFeatures">
-    <ul>
-      <li><img src="{{post.image}}" width="100" height="100"></li>
-      <li>{{post.content|truncatechars:100}}</li>
+  <div class="row-fluid">
+  <!-- Row2 start -->
+    {% for post in posts %}
+  <div class="span3 PlanPricing template4">  <!-- Price template4 Starts -->
+    <div class="planName"> <span class="price" style="background-color:#{{post.categories.color}}!important">{{post.categories|title}}</span>
+      <strong>{{post.title}}</strong>
+      <p>{{post.created_at|date:"d-m-Y"}}</p>
+    </div>
+    <div class="planFeatures">
+      <ul>
+        <li><img src="{{post.image.url}}" width="100" height="100"></li>
+        <li>{{post.content|truncatechars:100}}</li>
 
-    </ul>
+      </ul>
+    </div>
+    <p> <a href="{% url "news_view" pk=post.pk slug=post.slug %}" role="button" data-toggle="modal" style="background-color:#{{post.categories.color}}!important;border-color:#{{post.categories.color}}!important" class="btn btn-success btn-large">Devamını Oku </a> </p>
   </div>
-  <p> <a href="#Signup" role="button" data-toggle="modal" class="btn btn-success btn-large">Choose Plan </a> </p>
-</div>
-{% endfor %}
+  {% endfor %}
 
-</div>  <!-- Row2 ends -->
+  </div>  <!-- Row2 ends -->
 </div> <!-- Container ends -->
 <br><br><br>
 

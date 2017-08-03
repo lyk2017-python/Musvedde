@@ -38,6 +38,7 @@ class CategoryView(generic.CreateView):
 class SearchView(generic.ListView):
     model = Post
 
+
 class HomeView(generic.CreateView):
     form_class = NewsForm
     template_name = "news/post_list.html"
@@ -138,14 +139,14 @@ class ContactFormView(generic.FormView):
              "email={}\n"
              "ip={}").format(data["message"], data["email"], self.request.META["REMOTE_ADDR"]),
             settings.DEFAULT_FROM_EMAIL,
-            ["hvarmis21@gmail.com"]
+            ["gshakan16@gmail.com"]
         )
         return super().form_valid(form)
 
 
-class RegistratitonView(generic.FormView):
+class RegistrationView(generic.FormView):
     form_class = CustomUserCreationForm
-    template_name = "news/signup.html"
+    template_name = "news/login.html"
     success_url = "/"
 
     def form_valid(self, form):
