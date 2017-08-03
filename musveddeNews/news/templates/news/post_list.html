@@ -18,65 +18,22 @@
 <div class="container">  <!-- Contaner Starts -->
 <div class="row-fluid">
 <!-- Row2 start -->
+  {% for post in posts %}
 <div class="span3 PlanPricing template4">  <!-- Price template4 Starts -->
-  <div class="planName"> <span class="price">$99</span>
-    <h3>Budget</h3>
-    <p>Monthly Plan</p>
+  <div class="planName"> <span class="price" style="background-color:#{{post.categories.color}}!important">{{post.categories|title}}</span>
+    <h3>{{post.title}}</h3>
+    <p>{{post.created_at}}</p>
   </div>
   <div class="planFeatures">
     <ul>
-      <li><img src="{% static "news/img/profile.png" %}" width="100" height="100"></li>
-      <li>Pellentesque odio nisi, euismod in. Host multiple sites under one account, each with separate control panels. Starting at</li>
+      <li><img src="{{post.image}}" width="100" height="100"></li>
+      <li>{{post.content|truncatechars:100}}</li>
 
     </ul>
   </div>
   <p> <a href="#Signup" role="button" data-toggle="modal" class="btn btn-success btn-large">Choose Plan </a> </p>
 </div>
-
-<div class="span3 PlanPricing template4">
-  <div class="planName"> <span class="price">$99</span>
-    <h3>Standard</h3>
-    <p>Monthly Plan</p>
-  </div>
-  <div class="planFeatures">
-    <ul>
-      <li><img src="{% static "news/img/profile.png" %}" width="100" height="100"></li>
-      <li>Pellentesque odio nisi, euismod in. Host multiple sites under one account, each with separate control panels. Starting at</li>
-
-    </ul>
-  </div>
-  <p> <a href="#Signup" role="button" data-toggle="modal" class="btn btn-success btn-large">Choose Plan </a> </p>
-</div>
-
-<div class="span3 PlanPricing template4">
-  <div class="planName"> <span class="price">$99</span>
-    <h3>Premium</h3>
-    <p>Monthly Plan</p>
-  </div>
-  <div class="planFeatures">
-    <ul>
-      <li><img src="{% static "news/img/profile.png" %}" width="100" height="100"></li>
-      <li>Pellentesque odio nisi, euismod in. Host multiple sites under one account, each with separate control panels. Starting at</li>
-
-    </ul>
-  </div>
-  <p> <a href="#Signup" role="button" data-toggle="modal" class="btn btn-success btn-large">Choose Plan </a> </p>
-</div>
-
-<div class="span3 PlanPricing template4">
-  <div class="planName"> <span class="price">$99</span>
-    <h3>Crystal</h3>
-    <p>Monthly Plan</p>
-  </div>
-  <div class="planFeatures">
-    <ul>
-      <li><img src="{% static "news/img/profile.png" %}" width="100" height="100"></li>
-      <li>Pellentesque odio nisi, euismod in. Host multiple sites under one account, each with separate control panels. Starting at</li>
-
-    </ul>
-  </div>
-  <p> <a href="#Signup" role="button" data-toggle="modal" class="btn btn-success btn-large">Choose Plan </a> </p>
-</div>  <!-- Price template4 Ends -->
+{% endfor %}
 
 </div>  <!-- Row2 ends -->
 </div> <!-- Container ends -->
