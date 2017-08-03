@@ -1,3 +1,5 @@
 django
 pillow
 django-grappelli
+django-bootstrap3
+
