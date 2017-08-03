@@ -15,8 +15,7 @@
 </head>
 <body>
 
-    <div class="main">
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default main">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -31,37 +30,49 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <form class="navbar-form navbar-left" style="">
+                    <form class="navbar-form navbar-left">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Search">
                         </div>
                         <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
                      </form>
+                    {% if not request.user.is_authenticated %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href='{% url "login" %}' >Giriş Yap</a></li>
+                        <li><a href='{% url "login" %}'>Giriş Yap</a></li>
+                        <li><a href='{% url "signup" %}'>Kayıt Ol</a></li>
                     </ul>
+                    {% endif %}
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-        <div id="mySideNav" class="sidenav" >
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <img src="{% static "news/img/profile.png" %}" alt="profil" class="img-circle" width="100" height="100" style="border:2px solid #fff;display:inline">
-            <span style="color:#777"> Ziyaretçi</span>
-            <br>
-            <br>
+        <div id="mySideNav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a><br>
+            <div class="col-md-6">
+                <img src='{% static "news/img/profile.png" %}' alt="profil" class="img-circle" width="100" height="100" style="border:2px solid #fff;position:absolute;top:10px;">
+            </div>
+            <div class="col-md-6" style="margin-bottom:100px">
+            {% if request.user.is_authenticated %}
+                <span style="color:#fff;margin-bottom:20px">{{ request.user.username|title }}</span>
+                <a href="" style="margin-bottom:0px!important"><small style="font-size:15px">+ Profil</small></a>
+                <a href='{% url "logout" %}'><small style="font-size:15px">+ Çıkış Yap</small></a>
+            {% else %}
+                  <span style="color:#fff;margin-bottom:20px">{{ "Ziyaretçi"|title }}</span>
+            {% endif %}
+            </div>
             <ul>
                 {% for cat in categories %}
                 <li style="list-style-type:none;margin-right:30px"><a href='{% url "category_view" slug=cat.slug %}' style="color:#fff;text-decoration:none;"><i class="glyphicon glyphicon-home text-danger"></i> {{cat|title}}</a></li>
                 {% endfor %}
             </ul>
         </div>
+        <div class="main">
         {% block body %}
 
         {% endblock %}
-             <section style="height:80px;"></section>
+        </div>
+        <section style="height:80px;"></section>
     <!----------- Footer ------------>
-        {{ contact_form }}
-    <footer class="footer-bs">
+    <footer class="footer-bs main">
         <div class="row">
         	<div class="col-md-3 footer-brand animated fadeInLeft">
             	<h2>Logo</h2>
@@ -131,7 +142,6 @@
             </div>
         </div>
     </footer>
-    </div>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src='{% static "news/js/slippry.min.js" %}'></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

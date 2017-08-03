@@ -81,3 +81,7 @@ class CategorizeNewsForm(NewsForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
+
+        widgets = {
+            "categories": HiddenInput()
+        }

@@ -74,12 +74,13 @@ class NewsView(generic.CreateView):
             context["post"].read += 1
             context["post"].save()
             context["liked"] = None
-            if self.request.user:
+            if self.request.user.is_authenticated():
                 if UserLikes.objects.filter(post=self.get_post(), user=self.request.user):
                     context["liked"] = True
                 else:
                     context["liked"] = False
         return context
+
 
 def likeButton(request):
     if request.method == "POST":

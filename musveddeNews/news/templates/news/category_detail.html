@@ -1,29 +1,41 @@
 {% extends "news/base.html" %}
+{% load static %}
 {% block body %}
-    <h1>{{object}}</h1>
+    <div class="container">
+    <h1>{{object|title}}</h1>
 
-    <h4>Alt Kategoriler</h4>
     <ul>
     {% for sub_category in object.category_set.all %}
-        <li><a href='{% url "category_view" slug=sub_category.slug %}'>{{sub_category}}</a></li>
+        <li class="subcat" style="float:left;border:1px solid #003300;list-style-type:none;border-radius:5px;padding:5px;background-color:#339966"><a href='{% url "category_view" slug=sub_category.slug %}' style="color:#fff;text-decoration:none">{{sub_category|title}}</a></li>
     {% endfor %}
     </ul>
+    <div class="clearfix"></div>
     <hr>
-    <ul>
-    {% for spor in object.post_set.all %}
-        <li><a href='{% url "news_view" pk=spor.pk slug=spor.slug %}'>{{spor}}</a></li>
+    <div class="container"> <!-- Contaner Starts -->
+        <div class="row-fluid">
+        <!-- Row2 start -->
+    {% for catpost in object.post_set.all %}
+            <div class="span3 PlanPricing template4">  <!-- Price template4 Starts -->
+              <div class="planName"> <span class="price">{{catpost.categories|title}}</span>
+                <h4>{{catpost|title}}</h4>
+                <p>Monthly Plan</p>
+              </div>
+              <div class="planFeatures">
+                <ul>
+                  <li><img src="{% static "news/img/profile.png" %}" class="img-thumbnail"></li>
+                  <li>{{catpost.content|truncatechars:100}}</li>
+                </ul>
+              </div>
+              <p> <a href='{% url "news_view" pk=catpost.pk slug=catpost.slug %}' role="button" data-toggle="modal" class="btn btn-success btn-large">Devamını Oku </a> </p>
+            </div>
     {% endfor %}
     {% for sub_category in object.category_set.all %}
         {% for subnews in sub_category.post_set.all %}
+
         <li><a href='{% url "news_view" slug=subnews.slug pk=subnews.pk %}'>{{subnews}}</a></li>
         {% endfor %}
     {% endfor %}
-    </ul>
-    <h1>Haber Ekle</h1>
-    <hr>
-    <form action="." method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Ekle"></input>
-    </form>
+        </div>  <!-- Row2 ends -->
+    </div> <!-- Container ends -->
+    </div>
 {% endblock %}

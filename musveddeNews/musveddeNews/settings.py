@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap3',
     'news',
 ]
 
@@ -126,3 +127,4 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, "emails")
 DEFAULT_FROM_EMAIL = "noreply@musvedde.com"
 
 LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
