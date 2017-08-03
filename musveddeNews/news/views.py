@@ -1,9 +1,14 @@
 from django.core.mail import send_mail
 from django.views import generic
-from .models import Post, Category, Tags, Comments
-from django.http import Http404
+from .models import Post, Category, Tags, Comments, UserLikes
+from django.http import Http404, JsonResponse
+from django.db.models import F
 from news.forms import CategorizeNewsForm, ContactForm, CommentForm, NewsForm, CustomUserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+
 
 class CategoryView(generic.CreateView):
     form_class = CategorizeNewsForm
@@ -68,8 +73,32 @@ class NewsView(generic.CreateView):
         if self.request.method == "GET":
             context["post"].read += 1
             context["post"].save()
+            context["liked"] = None
+            if self.request.user:
+                if UserLikes.objects.filter(post=self.get_post(), user=self.request.user):
+                    context["liked"] = True
+                else:
+                    context["liked"] = False
         return context
 
+
+def likeButton(request):
+    if request.method == "POST":
+        id= request.POST.get("id", default=None)
+        post = get_object_or_404(Post, id=int(id))
+        like = UserLikes.objects.filter(user=request.user, post=post)
+        if not like:
+            UserLikes.objects.create(user=request.user, post=post)
+            post.liked = F("liked") + 1
+            post.save(update_fields=["liked"])
+            status = "added"
+        else:
+            like.delete()
+            post.liked = F("liked") - 1
+            post.save(update_fields=["liked"])
+            status = "deleted"
+        post.refresh_from_db()
+    return JsonResponse({"status": status, "likes": post.liked})
 
 
 class TagsView(generic.DetailView):

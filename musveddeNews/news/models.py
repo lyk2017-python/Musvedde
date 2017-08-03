@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.template.defaultfilters import slugify
-
+from django.contrib.auth.models import User
 
 class Post(models.Model):
     """ Class for Post News """
@@ -71,6 +71,11 @@ class Comments(models.Model):
     class Meta:
         verbose_name = "Comment"
         verbose_name_plural = "Comments"
+
+
+class UserLikes(models.Model):
+    user = models.ForeignKey(User)
+    post = models.ForeignKey("Post")
 
 
 @receiver(pre_save, sender=Post)

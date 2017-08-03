@@ -1,6 +1,7 @@
 {% extends "news/base.html" %}
 {% load static %}
 {% block body %}
+    {{ request.user }}
     <div class="container">
         <div class="jumbotron" style="overflow:auto">
             <em style="float:right">Okunma: {{"0"}}</em>
@@ -11,7 +12,17 @@
             {{ post.content }}
             <div class="clearfix"></div>
             <button class="btn btn-danger" style="float:right;margin:5px"><i class="glyphicon glyphicon-alert"></i> Şikayet Et {{"(1)"}}</button>
-            <button class="btn btn-success" style="float:right;margin:5px"><i class="glyphicon glyphicon-thumbs-up"></i> Beğen {{"(1)"}}</button>
+            <button id="like" onclick="like({{ post.id }})" class="btn {% if liked %}btn-danger{% else %}btn-success{% endif %}" style="float:right;margin:5px">
+                <i class="glyphicon glyphicon-thumbs-up"></i>
+                <span id="likeText">
+                    {% if liked %}
+                        Beğenmekten Vazgeç
+                    {% else %}
+                        Beğen
+                    {% endif %}
+                </span>
+                <span id="likeCount">({{ post.liked }})</span>
+            </button>
 
         </div>
         <br>
@@ -55,4 +66,31 @@
               </div>
         </div>
     </div>
+    <script>
+    function like(id) {
+        $.ajax({
+            method:"POST",
+            url: {% url "like" %},
+            data: {
+                "csrfmiddlewaretoken":getCookie('csrftoken'),
+                "id":id
+            },
+            success:function (data) {
+                console.log(data);
+                if(data["status"] == "added"){
+                    $("#like").removeClass("btn-primary").addClass("btn-danger");
+                    $("#likeText").text("Beğenmekten Vazgeç");
+                }else if(data["status"] == "deleted"){
+                    $("#like").removeClass("btn-danger").addClass("btn-primary");
+                    $("#likeText").text("Beğen");
+                }
+                $("#likeCount").text("("+data["likes"]+")");
+
+            }
+        })
+    }
+</script>
 {% endblock %}
+
+
+
