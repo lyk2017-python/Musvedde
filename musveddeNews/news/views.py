@@ -81,7 +81,6 @@ class NewsView(generic.CreateView):
                     context["liked"] = False
         return context
 
-
 def likeButton(request):
     if request.method == "POST":
         id= request.POST.get("id", default=None)
@@ -107,7 +106,7 @@ class TagsView(generic.DetailView):
 
 class ContactFormView(generic.FormView):
     form_class = ContactForm
-    template_name = "news/contact.html"
+    template_name = "news/base.html"
     success_url = "/"
 
     def form_valid(self, form):
