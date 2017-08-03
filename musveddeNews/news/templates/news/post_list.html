@@ -1,4 +1,5 @@
 {% extends "news/base.html" %}
+{% load static %}
 {% block body %}
 
 <section id="news-demo">
@@ -13,20 +14,72 @@
     </article>
     {% endfor %}
 </section>
- <!--<a style="float:right" href='{% url "contact" %}'>İletişim</a>
-    <div style="clear:both"></div>
-    <hr>
+
+<div class="container">  <!-- Contaner Starts -->
+<div class="row-fluid">
+<!-- Row2 start -->
+<div class="span3 PlanPricing template4">  <!-- Price template4 Starts -->
+  <div class="planName"> <span class="price">$99</span>
+    <h3>Budget</h3>
+    <p>Monthly Plan</p>
+  </div>
+  <div class="planFeatures">
     <ul>
-    {% for obj in posts %}
-        <li><a href='{% url "news_view" pk=obj.pk slug=obj.slug %}'>{{obj.title}}</a><p>{{obj.content|truncatechars:20}}</p>
-    </li>
-    {% endfor %}
+      <li><img src="{% static "news/img/profile.png" %}" width="100" height="100"></li>
+      <li>Pellentesque odio nisi, euismod in. Host multiple sites under one account, each with separate control panels. Starting at</li>
+
     </ul>
-    <h1>Haber Ekle</h1>
-    <hr>
-    <form action="." method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Ekle">
-    </form>-->
+  </div>
+  <p> <a href="#Signup" role="button" data-toggle="modal" class="btn btn-success btn-large">Choose Plan </a> </p>
+</div>
+
+<div class="span3 PlanPricing template4">
+  <div class="planName"> <span class="price">$99</span>
+    <h3>Standard</h3>
+    <p>Monthly Plan</p>
+  </div>
+  <div class="planFeatures">
+    <ul>
+      <li><img src="{% static "news/img/profile.png" %}" width="100" height="100"></li>
+      <li>Pellentesque odio nisi, euismod in. Host multiple sites under one account, each with separate control panels. Starting at</li>
+
+    </ul>
+  </div>
+  <p> <a href="#Signup" role="button" data-toggle="modal" class="btn btn-success btn-large">Choose Plan </a> </p>
+</div>
+
+<div class="span3 PlanPricing template4">
+  <div class="planName"> <span class="price">$99</span>
+    <h3>Premium</h3>
+    <p>Monthly Plan</p>
+  </div>
+  <div class="planFeatures">
+    <ul>
+      <li><img src="{% static "news/img/profile.png" %}" width="100" height="100"></li>
+      <li>Pellentesque odio nisi, euismod in. Host multiple sites under one account, each with separate control panels. Starting at</li>
+
+    </ul>
+  </div>
+  <p> <a href="#Signup" role="button" data-toggle="modal" class="btn btn-success btn-large">Choose Plan </a> </p>
+</div>
+
+<div class="span3 PlanPricing template4">
+  <div class="planName"> <span class="price">$99</span>
+    <h3>Crystal</h3>
+    <p>Monthly Plan</p>
+  </div>
+  <div class="planFeatures">
+    <ul>
+      <li><img src="{% static "news/img/profile.png" %}" width="100" height="100"></li>
+      <li>Pellentesque odio nisi, euismod in. Host multiple sites under one account, each with separate control panels. Starting at</li>
+
+    </ul>
+  </div>
+  <p> <a href="#Signup" role="button" data-toggle="modal" class="btn btn-success btn-large">Choose Plan </a> </p>
+</div>  <!-- Price template4 Ends -->
+
+</div>  <!-- Row2 ends -->
+</div> <!-- Container ends -->
+<br><br><br>
+
 {% endblock %}
