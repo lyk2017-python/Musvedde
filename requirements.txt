@@ -1,4 +1,6 @@
 django
 pillow
+django-grappelli
 django-bootstrap3
 django-gravatar2
+
