@@ -40,20 +40,40 @@
         <h1>"{{object}}" ile ilgili haberler</h1>
         <hr>
         <div class="tags_content">
-            <div class="row">
-        {% for obj in object.post_set.all %}
-            {% if forloop.counter0|divisibleby:"2" %}
+            <div class="col-md-9">
+                 <div class="row">
+            {% for obj in object.post_set.all %}
+                {% if forloop.counter0|divisibleby:"2" %}
             </div>
             <div class="row">
             {% endif %}
-            <div class="col-md-6" style="height:150px">
-            <p style="float:right;margin-left:10px"><strong>Tarih:</strong> Dün</p>
-            <p style="float:right"><strong>Yazar:</strong> anon</p><br>
-            <h3 style="display:inline"><a href='{% url "news_view" slug=obj.slug pk=obj.pk %}'>{{obj|truncatechars:50}}</a></h3><br>
-            <img src="{% static "news/img/default.jpg" %}" height="50" width="50" />
-          {{obj.content|truncatechars:100}}
+                <div class=" col-md-9">
+            <div class="panel panel-default" style="height:180px;width:820px">
+                <div class="panel-heading">
+                    <h4 style="display:inline"><a href='{% url "news_view" slug=obj.slug pk=obj.pk %}'>{{obj|truncatechars:100}}</a></h4>
+                    <p style="float:right;margin-left:10px"><strong>Tarih:</strong> {{obj.created_at|date:"d-m-Y - H:i:s"}}</p>
+                    <p style="float:right"><strong>Yazar:</strong> anon</p>
+                </div>
+                <div class="panel-body">
+                    <img src="{{obj.image.url}}" class="img-rounded" height="70" width="70" />
+                  {{obj.content|truncatechars:100}}
+                  <div class="clearfix"></div>
+                  <a href="{% url "news_view" pk=obj.pk slug=obj.slug %}" class="button-link read-more btn btn-primary pull-right">Devamını Oku</a>
+                </div>
             </div>
-        {% endfor %}
+            </div>
+            {% endfor %}
+            </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="text-primary">Etiketler</span>
+                    </div>
+                    <div class="panel-body">
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -60,6 +60,7 @@ class PostAdmin(admin.ModelAdmin):
                   ("title", "slug"),
                   "content",
                   ("liked", "reported", "read"),
+                  "source",
                   "image",
                   ("categories", "tags"),
                 ]

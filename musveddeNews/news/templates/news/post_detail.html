@@ -5,6 +5,7 @@
         <div class="jumbotron" style="overflow:auto">
             <em style="float:right">Okunma: {{post.read}}</em>
             <h2>{{ post.title|title}}</h2>
+            <h5>Kaynak: <a href="{{ post.source }}">{{ post.source }}</a></h5>
             <span style="float:right"><strong>Yazar:</strong>Anon <strong>Tarih:</strong>{{post.created_at|date:"d-m-Y"}}</span>
             <hr>
             <img src="{{post.image.url}}" alt="{{ post.title|title}}" height="300" width="300" style="float:right;" class="img-responsive">

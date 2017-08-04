@@ -69,6 +69,7 @@ class NewsView(generic.CreateView):
     template_name = "news/post_detail.html"
     success_url = "."
 
+    @method_decorator(login_required)
     def get_post(self):
         post = Post.objects.filter(slug=self.kwargs["slug"], hidden=False)
         if post.exists():
