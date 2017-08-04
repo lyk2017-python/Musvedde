@@ -39,7 +39,6 @@ class CategoryView(generic.CreateView):
         context["object"] = self.get_category()
         return context
 
-
 class SearchView(generic.ListView):
     model = Post
 
@@ -64,6 +63,7 @@ class HomeView(generic.CreateView):
 class NewsSearchingView(SearchView):
     template_name = "news/search.html"
 
+
     def get_queryset(self):
         result = super(SearchView, self).get_queryset()
 
@@ -79,6 +79,10 @@ class NewsView(generic.CreateView):
     template_name = "news/post_detail.html"
     success_url = "."
 
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
     def get_post(self):
         post = Post.objects.filter(slug=self.kwargs["slug"], hidden=False)
         if post.exists():
@@ -91,6 +95,7 @@ class NewsView(generic.CreateView):
         if self.request.method in ["POST", "PUT"]:
             comment = kwargs["data"].copy()
             comment["post"] = self.get_post().id
+            comment["user"] = self.request.user.id
             kwargs["data"] = comment
         return kwargs
 
@@ -112,30 +117,22 @@ class NewsView(generic.CreateView):
 
 def likeButton(request):
     if request.method == "POST":
-        id = request.POST.get("id", default=None)
-        action = request.POST.get("action", default=None)
+        id= request.POST.get("id", default=None)
         post = get_object_or_404(Post, id=int(id))
-        fields = {"user": request.user, "post": post}
+        like = UserLikes.objects.filter(user=request.user, post=post)
+        if not like:
+            UserLikes.objects.create(user=request.user, post=post)
+            post.liked = F("liked") + 1
+            post.save(update_fields=["liked"])
+            status = "added"
+        else:
+            like.delete()
+            post.liked = F("liked") - 1
+            post.save(update_fields=["liked"])
+            status = "deleted"
+        post.refresh_from_db()
+    return JsonResponse({"status": status, "likes": post.liked})
 
-        if action == "like":
-            model = UserLikes
-            col = "liked"
-        elif action == "report":
-            model = Reports
-            fields["message"] = request.POST.get("message", default=None)
-            col = "reported"
-        if action in ["like", "report"]:
-            like = model.objects.filter(**fields)
-            if not like:
-                model.objects.create(**fields)
-                setattr(post, col, F(col)+1)
-                status = "added"
-            else:
-                like.delete()
-                setattr(post, col, F(col) - 1)
-                status = "deleted"
-            post.refresh_from_db()
-            return JsonResponse({"status": status, "action": col, "count": getattr(post, col)})
 
 class TagsView(generic.DetailView):
     model = Tags
@@ -161,6 +158,7 @@ class ContactFormView(generic.FormView):
             ["gshakan16@gmail.com"]
         )
         return super().form_valid(form)
+
 
 
 class RegistrationView(generic.FormView):

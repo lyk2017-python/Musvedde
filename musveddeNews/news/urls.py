@@ -9,5 +9,6 @@ urlpatterns = [
     url(r"^contact/$", ContactFormView.as_view(), name="contact"),
     url(r"^signup/$", RegistrationView.as_view(), name="signup"),
     url(r"^search/$", NewsSearchingView.as_view(), name="list-search"),
-    url(r"^like/$", likeButton, name="like")
+    url(r"^like/$", likeButton, name="like"),
+
 ]

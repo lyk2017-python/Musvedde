@@ -91,21 +91,18 @@ class TagsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Comments)
-class CategoryAdmin(admin.ModelAdmin):
+class CommentsAdmin(admin.ModelAdmin):
     list_display = [
         "comment",
         "post",
         "created_at",
         "hidden",
         "reported",
-        "user_email",
     ]
 
     search_fields = [
         "comment",
         "post",
-        "user_name",
-        "user_email"
     ]
 
     list_filter = [

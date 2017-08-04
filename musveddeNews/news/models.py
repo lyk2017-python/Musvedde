@@ -61,14 +61,13 @@ class Tags(models.Model):
 
 class Comments(models.Model):
     """ Class for Comments """
-    user_name = models.CharField(max_length=50, verbose_name="Ad Soyad")
-    user_email = models.EmailField(verbose_name="Email")
     comment = models.TextField(verbose_name="Yorum")
     post = models.ForeignKey("Post")
     liked_count = models.PositiveIntegerField(default=0)
     reported = models.PositiveSmallIntegerField(default=0)
     hidden = models.BooleanField(default=False)
     created_at = models.DateField(default=datetime.datetime.now)
+    user = models.ForeignKey(User)
 
     def __str__(self):
         return "{} - {}".format(self.comment, self.user_email)

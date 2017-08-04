@@ -12,26 +12,16 @@
             {{ post.content }}
             <div class="clearfix"></div>
              {% if request.user.is_authenticated %}
-            <button id="reported" class="btn btn-sm {% if reported %}btn-success{% else %}btn-primary{% endif %}" style="float:right;margin:5px" data-toggle="modal" data-target="#reportModal">
-                <i class="glyphicon glyphicon-alert"></i>
-                <span id="reportedText">
-                    {% if liked %}
-                        Şikayeti Geri Al
-                    {% else %}
-                        Şikayet Et
-                    {% endif %}</span>
-                <span id="reportedCount">(1) </span>
-            </button>
-            <button id="liked" onclick="like({id:{{ post.id }}, action:'like'})" class="btn btn-sm {% if liked %}btn-success{% else %}btn-primary{% endif %}" style="float:right;margin:5px">
+           <button id="like" onclick="like({{ post.id }})" class="btn {% if liked %}btn-danger{% else %}btn-success{% endif %}" style="float:right;margin:5px">
                 <i class="glyphicon glyphicon-thumbs-up"></i>
-                <span id="likedText">
+                <span id="likeText">
                     {% if liked %}
                         Beğenmekten Vazgeç
                     {% else %}
                         Beğen
                     {% endif %}
                 </span>
-                <span id="likedCount">({{ post.liked }})</span>
+                <span id="likeCount">({{ post.liked }})</span>
             </button>
             {% endif %}
         </div>
@@ -52,7 +42,7 @@
                   <ul style="overflow:auto">
                       {% for com in post.comments_set.all %}
                         <img src="{% static "news/img/profile.png" %}" alt="{{com.user_name}}" height:"50" width="50" class="img-thumbnail">
-                        <span class="text-warning">{{com.user_name}}</span>
+                        <span class="text-warning">{{com.user}}</span>
                         <span class="glyphicon glyphicon-chevron-right"></span>
                         {{com.comment}}
                         <span class="pull-right">
@@ -87,22 +77,25 @@
     </div>
 
     <script>
-    function like(data) {
-        var texts = {"reported":["Şikayet Et", "Şikayeti Geri Al"], "liked":["Beğen", "Beğenmekten Vazgeç"] }
-        data["csrfmiddlewaretoken"] =  getCookie('csrftoken');
+    function like(id) {
         $.ajax({
             method:"POST",
             url: {% url "like" %},
-            data: data,
+            data: {
+                "csrfmiddlewaretoken":getCookie('csrftoken'),
+                "id":id
+            },
             success:function (data) {
+                console.log(data);
                 if(data["status"] == "added"){
-                    $("#"+data["action"]).removeClass("btn-primary").addClass("btn-success");
-                    $("#"+data["action"]+"Text").text(texts[data["action"][0]]);
+                    $("#like").removeClass("btn-primary").addClass("btn-danger");
+                    $("#likeText").text("Beğenmekten Vazgeç");
                 }else if(data["status"] == "deleted"){
-                    $("#"+data["action"]).removeClass("btn-success").addClass("btn-primary");
-                    $("#"+data["action"]+"Text").text(texts[data["action"][1]]);
+                    $("#like").removeClass("btn-danger").addClass("btn-primary");
+                    $("#likeText").text("Beğen");
                 }
-                $("#"+data["action"]+"Count").text("("+data["count"]+")");
+                $("#likeCount").text("("+data["likes"]+")");
+
             }
         })
     }

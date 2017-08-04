@@ -8,7 +8,7 @@
     <div class="col-md-9s">
         <h3 style="display:inline">{{searchpost.title}}</h3>
         <span class="pull-right">Ekleyen: <img src="" alt="{{"user"}}"></img></span>
-        <span style="float:right">Tarih:<strong> {{searchpost.created_at|date:"d-m-Y"}}</strong></span><br><br>
+        <span style="float:right;margin-right:10px">Tarih:<strong> {{searchpost.created_at|date:"d-m-Y"}}</strong></span><br><br>
         <span>{{searchpost.content|truncatechars:200}}</span><br><br>
          <a href="{% url "news_view" pk=searchpost.pk slug=searchpost.slug %}" class="button-link read-more btn btn-primary pull-right">Devamını Oku</a>
     </div>
