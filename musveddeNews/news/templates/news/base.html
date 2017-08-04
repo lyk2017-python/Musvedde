@@ -1,4 +1,5 @@
-{% load static %}
+{% load static bootstrap3 %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +20,6 @@
     <div class="main">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
@@ -32,50 +32,52 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <form  action="{% url 'list-search' %}" method="get" accept-charset="utf-8">
+                    <form action="{% url 'list-search' %}" method="get" accept-charset="utf-8" style="display:inline">
                             <div class="form-group">
-
-                                <input  name="q" type="text" placeholder="Öneri Ara!">
-
+                                <input name="q" class="form-control" onfocus="genislet()" onblur="kucult()" style="width:300px;margin-top:10px;display:inline" type="text" placeholder="Haber Ara!">
+                                <button class="btn btn-primary" style="display:inline" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                {% if not request.user.is_authenticated %}
+                                <ul class="nav navbar-nav navbar-right" style="display:inline">
+                                    <li><a href='{% url "login" %}'><i class="fa fa-sign-in"></i> Giriş Yap</a></li>
+                                    <li><a href='{% url "register" %}'><i class="fa fa-user-plus"></i> Kayıt Ol</a></li>
+                                </ul>
+                                {% endif %}
                             </div>
-                            <button type="submit">Ara</button>
-                        </form>
-                    {% if not request.user.is_authenticated %}
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href='{% url "login" %}'>Giriş Yap</a></li>
-                        <li><a href='{% url "signup" %}'>Kayıt Ol</a></li>
-                    </ul>
-                    {% endif %}
+                    </form>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
         <div id="mySideNav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <div class="col-md-6">
-                <img src='{% static "news/img/profile.png" %}' alt="profil" class="img-circle" width="100" height="100" style="border:2px solid #fff;position:absolute;top:10px;">
-            </div>
-            {% if request.user.is_authenticated %}
-            <div class="col-md-6" style="margin-bottom: 50px;">
+            <div class="navcontent">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <div class="col-md-6">
+                    <img src='{% static "news/img/profile.png" %}' alt="profil" class="img-circle" width="100" height="100" style="border:2px solid #fff;position:absolute;top:10px;">
+                </div>
+                {% if request.user.is_authenticated %}
+                <div class="col-md-6" style="margin-bottom: 50px;">
                 <span style="color:#fff;margin-bottom:20px">{{ request.user.username|title }} YAVAŞ</span>
                 <a href="" style="margin-bottom:0px!important"><small style="font-size:15px">+ Profil</small></a>
                 <a href='{% url "logout" %}'><small style="font-size:15px">+ Çıkış Yap</small></a>
-            {% else %}
+                {% else %}
                 <div class="col-md-6" style="margin-bottom: 120px;">
                   <span style="color:#fff;">{{ "Ziyaretçi"|title }}</span>
-            {% endif %}
+                {% endif %}
+                </div>
+                <ul>
+                    {% for cat in categories %}
+                        <li style="list-style-type:none;margin-right:30px"><a href='{% url "category_view" slug=cat.slug %}' style="color:#fff;text-decoration:none;"><i class="fa {{cat.icon}} text-primary" style="margin-right:10px"></i> {{cat|title}}</a></li>
+                    {% endfor %}
+                </ul>
             </div>
-            <ul>
-                {% for cat in categories %}
-                <li style="list-style-type:none;margin-right:30px"><a href='{% url "category_view" slug=cat.slug %}' style="color:#fff;text-decoration:none;"><i class="fa {{cat.icon}}"></i> {{cat|title}}</a></li>
-                {% endfor %}
-            </ul>
+            </div>
         </div>
         <div class="main">
         {% block body %}
 
         {% endblock %}
         </div>
-        <section style="height:80px;"></section>
+    </div>
+    <section style="height:80px;"></section>
     <!----------- Footer ------------>
     <footer class="footer-bs main">
         <div class="row">
@@ -83,20 +85,20 @@
                 <img src="{% static "news/img/EZiAM6Nk.jpg"%} " alt="Resim yüklenemedi">
                 <p>Suspendisse hendrerit tellus laoreet luctus pharetra. Aliquam porttitor vitae orci nec ultricies. Curabitur vehicula, libero eget faucibus faucibus, purus erat eleifend enim, porta pellentesque ex mi ut sem.</p>
                 <p>© 2014 BS3 UI Kit, All rights reserved</p>
+                <img src="{% static "news/img/logo.jpeg" %}" alt="Logo" width="100" height="100" style="border-radius:100px;margin-bottom:20px">
+                <p>Bir haber sitesinden çok daha fazlası.<br>Editörlük işini tamamen kullanıcalara aktardığımız özgür bir haber platformu...</p>
+                <p>© 2017 Free Project, MIT License</p>
             </div>
         	<div class="col-md-4 footer-nav animated fadeInUp">
-            	<h4>Menu —</h4>
+            	<h4>Kategoriler —</h4>
             	<div class="col-md-6">
                     <ul class="pages">
-                        <li><a href="#">Travel</a></li>
-                        <li><a href="#">Nature</a></li>
-                        <li><a href="#">Explores</a></li>
-                        <li><a href="#">Science</a></li>
-                        <li><a href="#">Advice</a></li>
+                    {% for cat in categories %}
+                        <li style="list-style-type:none;margin-right:30px"><a href='{% url "category_view" slug=cat.slug %}' style="color:#fff;text-decoration:none;"> {{cat|title}}</a></li>
+                    {% endfor %}
                     </ul>
                 </div>
             	<div class="col-md-6">
-                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Bize Ulaşın</button>
                     <!-- Modal -->
                     <div id="myModal" class="modal fade" role="dialog">
                       <div class="modal-dialog">
@@ -111,7 +113,7 @@
                             <h1>İletişim</h1>
                             <form action="." method="POST">
                             {% csrf_token %}
-                            {{form.as_p}}
+                            {% bootstrap_form contact_form %}
                                 <input type="submit" value="Save"/>
                             </form>
                           </div>
@@ -125,23 +127,20 @@
                 </div>
             </div>
         	<div class="col-md-2 footer-social animated fadeInDown">
-            	<h4>Follow Us</h4>
-            	<ul>
-                	<li><a href="#">Facebook</a></li>
-                	<li><a href="#">Twitter</a></li>
-                	<li><a href="#">Instagram</a></li>
-                	<li><a href="#">RSS</a></li>
-                </ul>
+            	<h4>İletişim</h4>
+            	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">Bize Ulaşın</button>
             </div>
         	<div class="col-md-3 footer-ns animated fadeInRight">
-            	<h4>Newsletter</h4>
-                <p>A rover wearing a fuzzy suit doesn’t alarm the real penguins</p>
+            	<h4>Ara</h4>
+                <p>Aradığınız habere anahtar kelime ile ulaşın.</p>
                 <p>
                     <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Search for...">
-                      <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
-                      </span>
+                      <form action="{% url 'list-search' %}" method="get" accept-charset="utf-8" style="display:inline">
+                            <div class="form-group">
+                                <input name="q" class="form-control" style="width:230px;margin-top:0px;display:inline" type="text" placeholder="Haber Ara!">
+                                <button class="btn btn-primary" style="display:inline" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                      </form>
                     </div><!-- /input-group -->
                  </p>
             </div>
@@ -170,6 +169,25 @@
         $(document).ready(function(){
             $(".section").css("min-height", $(window).height());
         })
+
+         function genislet(){
+               $("input[name=q]").animate({
+                    width: "400"
+                  }, 2000, function() {
+                    // Animation complete.
+               });
+         }
+
+         function kucult(){
+            $("input[name=q]").animate({
+                    width: "300"
+                  }, 2000, function() {
+                    // Animation complete.
+              });
+         }
     </script>
+    {% block script %}
+
+    {% endblock %}
 </body>
 </html>

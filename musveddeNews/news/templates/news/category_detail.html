@@ -16,17 +16,17 @@
         <!-- Row2 start -->
     {% for catpost in object.post_set.all %}
             <div class="span3 PlanPricing template4">  <!-- Price template4 Starts -->
-              <div class="planName"> <span class="price">{{catpost.categories|title}}</span>
+              <div class="planName"> <span class="price" style="background-color:#{{catpost.categories.color}}">{{catpost.categories|title}}</span>
                 <h4>{{catpost|title}}</h4>
                 <p>Monthly Plan</p>
               </div>
               <div class="planFeatures">
                 <ul>
-                  <li><img src="{% static "news/img/profile.png" %}" class="img-thumbnail"></li>
+                  <li><img src="{{catpost.image.url}}" class="img-thumbnail"></li>
                   <li>{{catpost.content|truncatechars:100}}</li>
                 </ul>
               </div>
-              <p> <a href='{% url "news_view" pk=catpost.pk slug=catpost.slug %}' role="button" data-toggle="modal" class="btn btn-success btn-large">Devamını Oku </a> </p>
+              <p><a href='{% url "news_view" pk=catpost.pk slug=catpost.slug %}' role="button" data-toggle="modal" style="background-color:#{{catpost.categories.color}}!important;border-color:#{{post.categories.color}}!important" class="btn btn-success btn-large">Devamını Oku </a> </p>
             </div>
             {% empty %}
                 <div style="margin-top:25px" class="alert alert-danger"><h5 class="text-danger">Bu kategoriye ait haber bulunamadı!</h5></div>

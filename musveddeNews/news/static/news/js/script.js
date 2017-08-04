@@ -2,16 +2,20 @@ var main = $(".main");
 var mySideNav = $("#mySideNav");
 
 function openNav() {
+    $(".navcontent").hide();
+    $(".navcontent").show(500);
     mySideNav.css("width", "250px");
     main.css("margin-left", "250px");
 }
 
 function closeNav() {
+    $(".navcontent").hide();
     mySideNav.css("width", "0");
     main.css("margin-left", "0");
 }
 $(".main").on("click", function(){
     if(mySideNav.css("width") == "250px"){
+       $(".navcontent").hide();
        mySideNav.css("width", "0");
        main.css("margin-left", "0");
     }

@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
+
 class Post(models.Model):
     """ Class for Post News """
     title = models.CharField(max_length=160)
@@ -59,7 +60,7 @@ class Tags(models.Model):
 
 class Comments(models.Model):
     """ Class for Comments """
-    user_name = models.CharField(max_length=50,verbose_name="Ad Soyad")
+    user_name = models.CharField(max_length=50, verbose_name="Ad Soyad")
     user_email = models.EmailField(verbose_name="Email")
     comment = models.TextField(verbose_name="Yorum")
     post = models.ForeignKey("Post")

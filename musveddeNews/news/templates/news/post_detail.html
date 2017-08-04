@@ -7,7 +7,7 @@
             <h2>{{ post.title|title}}</h2>
             <span style="float:right"><strong>Yazar:</strong>Anon <strong>Tarih:</strong>{{post.created_at|date:"d-m-Y"}}</span>
             <hr>
-            <img src="{% static "news/img/default.jpg" %}" alt="{{ post.title|title}}" height="300" width="300" style="float:right;" class="img-responsive">
+            <img src="{{post.image.url}}" alt="{{ post.title|title}}" height="300" width="300" style="float:right;" class="img-responsive">
             {{ post.content }}
             <div class="clearfix"></div>
              {% if request.user.is_authenticated %}
