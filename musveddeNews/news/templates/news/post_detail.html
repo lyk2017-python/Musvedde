@@ -8,21 +8,30 @@
             <h5>Kaynak: <a href="{{ post.source }}">{{ post.source }}</a></h5>
             <span style="float:right"><strong>Yazar:</strong>Anon <strong>Tarih:</strong>{{post.created_at|date:"d-m-Y"}}</span>
             <hr>
-            <img src="{{post.image.url}}" alt="{{ post.title|title}}" height="300" width="300" style="float:right;" class="img-responsive">
+            <img src="" alt="{{ post.title|title}}" height="300" width="300" style="float:right;" class="img-responsive">
             {{ post.content }}
             <div class="clearfix"></div>
              {% if request.user.is_authenticated %}
-            <button class="btn btn-sm btn-danger" style="float:right;margin:5px"><i class="glyphicon glyphicon-alert"></i> Şikayet Et {{"(1)"}}</button>
-            <button id="like" onclick="like({{ post.id }})" class="btn btn-sm {% if liked %}btn-success{% else %}btn-primary{% endif %}" style="float:right;margin:5px">
+            <button id="reported" class="btn btn-sm {% if reported %}btn-success{% else %}btn-primary{% endif %}" style="float:right;margin:5px" data-toggle="modal" data-target="#reportModal">
+                <i class="glyphicon glyphicon-alert"></i>
+                <span id="reportedText">
+                    {% if liked %}
+                        Şikayeti Geri Al
+                    {% else %}
+                        Şikayet Et
+                    {% endif %}</span>
+                <span id="reportedCount">(1) </span>
+            </button>
+            <button id="liked" onclick="like({id:{{ post.id }}, action:'like'})" class="btn btn-sm {% if liked %}btn-success{% else %}btn-primary{% endif %}" style="float:right;margin:5px">
                 <i class="glyphicon glyphicon-thumbs-up"></i>
-                <span id="likeText">
+                <span id="likedText">
                     {% if liked %}
                         Beğenmekten Vazgeç
                     {% else %}
                         Beğen
                     {% endif %}
                 </span>
-                <span id="likeCount">({{ post.liked }})</span>
+                <span id="likedCount">({{ post.liked }})</span>
             </button>
             {% endif %}
         </div>
@@ -67,26 +76,33 @@
               </div>
         </div>
     </div>
+    <div id="reportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="reportModal">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <p>Lütfen şikayet etme sebebini giriniz</p>
+                {{ report_form }}
+                <button onclick="like({ id:{{ post.id }}, action:'report', message:$('#id_message').val()})" class="btn btn-danger">Şikayet Et</button>
+        </div>
+      </div>
+    </div>
+
     <script>
-    function like(id) {
+    function like(data) {
+        var texts = {"reported":["Şikayet Et", "Şikayeti Geri Al"], "liked":["Beğen", "Beğenmekten Vazgeç"] }
+        data["csrfmiddlewaretoken"] =  getCookie('csrftoken');
         $.ajax({
             method:"POST",
             url: {% url "like" %},
-            data: {
-                "csrfmiddlewaretoken":getCookie('csrftoken'),
-                "id":id
-            },
+            data: data,
             success:function (data) {
-                console.log(data);
                 if(data["status"] == "added"){
-                    $("#like").removeClass("btn-default").addClass("btn-success");
-                    $("#likeText").text("Beğenmekten Vazgeç");
+                    $("#"+data["action"]).removeClass("btn-primary").addClass("btn-success");
+                    $("#"+data["action"]+"Text").text(texts[data["action"][0]]);
                 }else if(data["status"] == "deleted"){
-                    $("#like").removeClass("btn-success").addClass("btn-primary");
-                    $("#likeText").text("Beğen");
+                    $("#"+data["action"]).removeClass("btn-success").addClass("btn-primary");
+                    $("#"+data["action"]+"Text").text(texts[data["action"][1]]);
                 }
-                $("#likeCount").text("("+data["likes"]+")");
-
+                $("#"+data["action"]+"Count").text("("+data["count"]+")");
             }
         })
     }

@@ -22,6 +22,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(default=datetime.datetime.now)
     updated_at = models.DateTimeField(auto_now=True)
     featured_until = models.DateTimeField(default=None, blank=True, null=True)
+    user = models.ForeignKey(User)
 
     def __str__(self):
         return "{}".format(self.title)
@@ -82,6 +83,12 @@ class UserLikes(models.Model):
     post = models.ForeignKey("Post")
 
 
+class Reports(models.Model):
+    user = models.ForeignKey(User)
+    post = models.ForeignKey("Post")
+    message = models.CharField(max_length=180)
+
+
 @receiver(pre_save, sender=Post)
 @receiver(pre_save, sender=Category)
 @receiver(pre_save, sender=Tags)
@@ -96,13 +103,3 @@ def define_slug(sender, instance, *args, **kwargs):
         else:
             raise AttributeError("It needs name, tag or title to define slug")
     return instance
-
-
-@receiver(pre_save, sender=Post)
-@receiver(pre_save, sender=Comments)
-def auto_hidden(sender, instance, *args, **kwargs):
-    if instance.reported >= 10:
-        instance.hidden = True
-    return instance
-
-

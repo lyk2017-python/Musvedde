@@ -1,9 +1,9 @@
 from django.core.mail import send_mail
 from django.views import generic
-from .models import Post, Category, Tags, Comments, UserLikes
+from .models import Post, Category, Tags, Comments, UserLikes, Reports
 from django.http import Http404, JsonResponse
 from django.db.models import F
-from news.forms import CategorizeNewsForm, ContactForm, CommentForm, NewsForm, CustomUserCreationForm
+from news.forms import CategorizeNewsForm, ContactForm, CommentForm, NewsForm, CustomUserCreationForm, ReportForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -14,6 +14,10 @@ class CategoryView(generic.CreateView):
     form_class = CategorizeNewsForm
     template_name = "news/category_detail.html"
     success_url = "."
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
     def get_category(self):
         query = Category.objects.filter(slug=self.kwargs["slug"])
@@ -35,6 +39,7 @@ class CategoryView(generic.CreateView):
         context["object"] = self.get_category()
         return context
 
+
 class SearchView(generic.ListView):
     model = Post
 
@@ -44,15 +49,20 @@ class HomeView(generic.CreateView):
     template_name = "news/post_list.html"
     success_url = "."
 
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["posts"] = Post.objects.filter(hidden=False)
+        context["most_viewed"] = context["posts"].order_by("-read")[:5]
+        context["most_liked"] = context["posts"].order_by("-liked")[:5]
         return context
 
 
 class NewsSearchingView(SearchView):
     template_name = "news/search.html"
-
 
     def get_queryset(self):
         result = super(SearchView, self).get_queryset()
@@ -69,7 +79,6 @@ class NewsView(generic.CreateView):
     template_name = "news/post_detail.html"
     success_url = "."
 
-    @method_decorator(login_required)
     def get_post(self):
         post = Post.objects.filter(slug=self.kwargs["slug"], hidden=False)
         if post.exists():
@@ -92,6 +101,7 @@ class NewsView(generic.CreateView):
             context["post"].read += 1
             context["post"].save()
             context["liked"] = None
+            context["report_form"] = ReportForm
             if self.request.user.is_authenticated():
                 if UserLikes.objects.filter(post=self.get_post(), user=self.request.user):
                     context["liked"] = True
@@ -102,22 +112,30 @@ class NewsView(generic.CreateView):
 
 def likeButton(request):
     if request.method == "POST":
-        id= request.POST.get("id", default=None)
+        id = request.POST.get("id", default=None)
+        action = request.POST.get("action", default=None)
         post = get_object_or_404(Post, id=int(id))
-        like = UserLikes.objects.filter(user=request.user, post=post)
-        if not like:
-            UserLikes.objects.create(user=request.user, post=post)
-            post.liked = F("liked") + 1
-            post.save(update_fields=["liked"])
-            status = "added"
-        else:
-            like.delete()
-            post.liked = F("liked") - 1
-            post.save(update_fields=["liked"])
-            status = "deleted"
-        post.refresh_from_db()
-    return JsonResponse({"status": status, "likes": post.liked})
+        fields = {"user": request.user, "post": post}
 
+        if action == "like":
+            model = UserLikes
+            col = "liked"
+        elif action == "report":
+            model = Reports
+            fields["message"] = request.POST.get("message", default=None)
+            col = "reported"
+        if action in ["like", "report"]:
+            like = model.objects.filter(**fields)
+            if not like:
+                model.objects.create(**fields)
+                setattr(post, col, F(col)+1)
+                status = "added"
+            else:
+                like.delete()
+                setattr(post, col, F(col) - 1)
+                status = "deleted"
+            post.refresh_from_db()
+            return JsonResponse({"status": status, "action": col, "count": getattr(post, col)})
 
 class TagsView(generic.DetailView):
     model = Tags

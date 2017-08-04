@@ -1,7 +1,7 @@
 {% extends "news/base.html" %}
-{% load static %}
+{% load static bootstrap3 %}
 {% block body %}
-
+    <button id="liked"  class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addNewsModal"></button>
 <div class="row">
   <div class="col-md-8">
   <section id="news-demo">
@@ -12,7 +12,7 @@
           <p>{{obj.content|truncatechars:160}}</p>
           <a href="{% url "news_view" pk=obj.pk slug=obj.slug %}" class="button-link read-more btn btn-primary">Devamını Oku</a>
         </div>
-        <div class="image-content"><img src="{{obj.image.url}}" width="675" height="355" alt="demo1_1"></div>
+        <div class="image-content"><img src="" width="675" height="355" alt="demo1_1"></div>
       </article>
       {% endfor %}
   </section>
@@ -39,7 +39,7 @@
       <h3>En çok etiketi olanlar</h3>
     </div>
     <div id="menu3" class="tab-pane fade">
-      <h3>En çok okunanlar</h3>
+      <h3>{{ most_viewed }}</h3>
     </div>
   </div>
   </div>
@@ -56,13 +56,24 @@
     </div>
     <div class="planFeatures">
       <ul>
-        <li><img src="{{post.image.url}}" width="100" height="100"></li>
+        <li><img src="" width="100" height="100"></li>
         <li>{{post.content|truncatechars:100}}</li>
 
       </ul>
     </div>
     <p> <a href="{% url "news_view" pk=post.pk slug=post.slug %}" role="button" data-toggle="modal" style="background-color:#{{post.categories.color}}!important;border-color:#{{post.categories.color}}!important" class="btn btn-success btn-large">Devamını Oku </a> </p>
   </div>
+    <div id="addNewsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="reportModal">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="." method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button type="submit" class="btn btn-danger">Ekle</button>
+            </form>
+        </div>
+      </div>
+    </div>
   {% endfor %}
 
   </div>  <!-- Row2 ends -->

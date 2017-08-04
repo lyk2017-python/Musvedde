@@ -1,5 +1,5 @@
 from django.contrib import admin
-from news.models import Category, Post, Tags, Comments
+from news.models import Category, Post, Tags, Comments, Reports
 
 # Register your models here.
 
@@ -115,3 +115,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
     ]
 
+@admin.register(Reports)
+class ReportsAdmin(admin.ModelAdmin):
+    pass

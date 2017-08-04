@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, get_user_model
 from django.forms import HiddenInput
-from news.models import Post, Tags, Comments
+from news.models import Post, Tags, Comments, Reports
+
 
 
 class NewsForm(forms.ModelForm):
@@ -41,6 +42,16 @@ class ContactForm(forms.Form):
     email = forms.EmailField()
     subject = forms.CharField(max_length=160)
     message = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+
+
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Reports
+        exclude = []
+        widgets = {
+            "post": HiddenInput(),
+            "user": HiddenInput()
+        }
 
 
 class CommentForm(forms.ModelForm):
