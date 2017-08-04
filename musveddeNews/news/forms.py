@@ -4,7 +4,6 @@ from django.forms import HiddenInput
 from news.models import Post, Tags, Comments, Reports
 
 
-
 class NewsForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(queryset=Tags.objects.all(), required=False)
     tag_names = forms.CharField(required=False)
@@ -35,7 +34,12 @@ class NewsForm(forms.ModelForm):
             "liked",
             "hidden",
             "slug",
+            "read"
         ]
+
+        widgets = {
+            "user": HiddenInput()
+        }
 
 
 class ContactForm(forms.Form):
@@ -83,16 +87,16 @@ class CategorizeNewsForm(NewsForm):
             "liked",
             "hidden",
             "slug",
+            "read",
         ]
         widgets = {
-            "categories": HiddenInput()
+            "categories": HiddenInput(),
+            "user": HiddenInput()
         }
 
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
+        fields = ('username', 'email', 'password1', 'password2')
 
-        widgets = {
-            "categories": HiddenInput()
-        }

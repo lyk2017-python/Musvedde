@@ -1,5 +1,5 @@
 {% extends "news/base.html" %}
-{% load static %}
+{% load static gravatar %}
 {% block body %}
     <style>
 
@@ -50,9 +50,9 @@
                 <div class=" col-md-9">
             <div class="panel panel-default" style="height:180px;width:820px">
                 <div class="panel-heading">
-                    <h4 style="display:inline"><a href='{% url "news_view" slug=obj.slug pk=obj.pk %}'>{{obj|truncatechars:100}}</a></h4>
+                    <h4 style="display:inline"><a href='{% url "news_view" slug=obj.slug pk=obj.pk %}' data-toggle="tooltip" title="{{obj.title}}">{{obj|truncatechars:50}}</a></h4>
                     <p style="float:right;margin-left:10px"><strong>Tarih:</strong> {{obj.created_at|date:"d-m-Y - H:i:s"}}</p>
-                    <p style="float:right"><strong>Yazar:</strong> anon</p>
+                    <a href="" data-toggle="tooltip" style="text-decoration:none;color:#333;margin-left:10px;margin-top:-5px" title="{{obj.user}}" class="pull-right"><strong>Yazar: </strong>{% gravatar obj.user.email 30 %}</a>
                 </div>
                 <div class="panel-body">
                     <img src="{{obj.image.url}}" class="img-rounded" height="70" width="70" />
@@ -62,6 +62,8 @@
                 </div>
             </div>
             </div>
+            {% empty %}
+                <div style="margin-top:25px" class="alert alert-danger"><h5 class="text-danger">İstediğiniz etikete ait haber bulunamadı!</h5></div>
             {% endfor %}
             </div>
             </div>
@@ -71,7 +73,14 @@
                         <span class="text-primary">Etiketler</span>
                     </div>
                     <div class="panel-body">
-
+                        <ul>
+                        {% for tag in tags %}
+                            {% if forloop.counter0|divisibleby:"3" %}
+                            <div class="clearfix"></div>
+                            {% endif %}
+                            <li style="float:left;margin-right:5px;padding:5px;background-color:#555;"><a style="color:#fff" href="{% url "tag_view" slug=tag.slug %}">{{tag}}</a></li>
+                        {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </div>

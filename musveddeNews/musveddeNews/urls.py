@@ -25,7 +25,6 @@ urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/login/$', view_auth.LoginView.as_view(), name='login'),
-    url(r'^accounts/register/$', view_auth.LoginView.as_view(), name='register'),
     url(r'^accounts/logout/$', view_auth.LogoutView.as_view(), name='logout'),
     url("^", include(news_urls)),
 ]

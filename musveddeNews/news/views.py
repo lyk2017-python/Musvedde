@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
 from django.views import generic
 from .models import Post, Category, Tags, Comments, UserLikes, Reports
@@ -31,6 +32,7 @@ class CategoryView(generic.CreateView):
         if self.request.method in ["POST", "PUT"]:
             post_data = kwargs["data"].copy()
             post_data["categories"] = self.get_category().id
+            post_data["user"] = self.request.user
             kwargs["data"] = post_data
         return kwargs
 
@@ -54,15 +56,23 @@ class HomeView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["posts"] = Post.objects.filter(hidden=False)
+        context["posts"] = Post.objects.filter(hidden=False).order_by("-created_at")
+        context["featured"] = context["posts"].order_by("-created_at")[:5]
         context["most_viewed"] = context["posts"].order_by("-read")[:5]
         context["most_liked"] = context["posts"].order_by("-liked")[:5]
         return context
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.request.method in ["POST", "PUT"]:
+            data = kwargs["data"].copy()
+            data["user"] = self.request.user.id
+            kwargs["data"] = data
+        return kwargs
+
 
 class NewsSearchingView(SearchView):
     template_name = "news/search.html"
-
 
     def get_queryset(self):
         result = super(SearchView, self).get_queryset()
@@ -137,6 +147,11 @@ def likeButton(request):
 class TagsView(generic.DetailView):
     model = Tags
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tags"] = Tags.objects.all()
+        return context
+
 
 class ContactFormView(generic.FormView):
     form_class = ContactForm
@@ -160,10 +175,9 @@ class ContactFormView(generic.FormView):
         return super().form_valid(form)
 
 
-
 class RegistrationView(generic.FormView):
     form_class = CustomUserCreationForm
-    template_name = "news/login.html"
+    template_name = "news/register.html"
     success_url = "/"
 
     def form_valid(self, form):

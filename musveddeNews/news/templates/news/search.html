@@ -1,4 +1,5 @@
 {% extends "news/base.html" %}
+{% load gravatar %}
 {% block body %}
 <div class="container">
 {% for searchpost in object_list %}
@@ -6,14 +7,14 @@
         <img src="{{searchpost.image.url}}" width="200" height="200" alt="Image" class="img-responsive" style="display:inline;border-radius:200px">
     </div>
     <div class="col-md-9s">
-        <h3 style="display:inline">{{searchpost.title}}</h3>
-        <span class="pull-right">Ekleyen: <img src="" alt="{{"user"}}"></img></span>
-        <span style="float:right;margin-right:10px">Tarih:<strong> {{searchpost.created_at|date:"d-m-Y"}}</strong></span><br><br>
+        <h3 style="display:inline"><a href='{% url "news_view" slug=searchpost.slug pk=searchpost.pk %}' data-toggle="tooltip" title="{{searchpost.title}}">{{searchpost.title|truncatechars:50}}</a></h3>
+        <a href="#" data-toggle="tooltip" style="text-decoration:none;color:#333" title="{{searchpost.user}}" class="pull-right">Yazar: {% gravatar searchpost.user.email 30 %}</a>
+        <span style="float:right;margin-top:4px;margin-right:10px">Tarih:<strong> {{searchpost.created_at|date:"d-m-Y"}}</strong></span><br><br>
         <span>{{searchpost.content|truncatechars:200}}</span><br><br>
          <a href="{% url "news_view" pk=searchpost.pk slug=searchpost.slug %}" class="button-link read-more btn btn-primary pull-right">Devamını Oku</a>
     </div>
     <div class="clearfix"></div>
-    <hr>
+    <hr style="border-color:#000">
     {% empty %}
         <div style="margin-top:25px" class="alert alert-danger"><h5 class="text-danger">Aradığınız konuya ait haber bulunamadı!</h5></div>
 {% endfor %}

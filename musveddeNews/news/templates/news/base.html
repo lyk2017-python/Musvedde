@@ -34,7 +34,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <form action="{% url 'list-search' %}" method="get" accept-charset="utf-8" style="display:inline">
                         <div class="form-group">
-                            <input name="q" class="form-control" onfocus="genislet()" onblur="kucult()" style="width:300px;margin-top:10px;display:inline" type="text" placeholder="Haber Ara!">
+                            <input id="s" name="q" class="form-control" onfocus="genislet()" onblur="kucult()" style="width:300px;margin-top:10px;display:inline" type="text" placeholder="Haber Ara!">
                             <button class="btn btn-primary" style="display:inline" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                             {% if not request.user.is_authenticated %}
                             <ul class="nav navbar-nav navbar-right" style="display:inline">
@@ -48,9 +48,7 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="">Profil</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="{% url "logout" %}">Çıkış Yap</a></li>
+                                    <li><a href="{% url "logout" %}"><i class="fa fa-sign-out"></i> Çıkış Yap</a></li>
                                   </ul>
                             </div>
                             {% endif %}
@@ -69,7 +67,6 @@
                 <div class="col-md-6" style="margin-bottom: 30px;">
                 <span style="color:#fff;margin-bottom:20px">{{ request.user.username|title }}</span>
                 <span style="font-size:11px;color:#fff!important;margin-top:20px"><br><br>Son Giriş: <strong style="font-size:11px"><em>{{request.user.last_login|date:"d-m-Y H:i:s"}}</em></strong></span>
-                <a href="" style="margin-bottom:0px!important"><small style="font-size:15px">+ Profil</small></a>
                 <a href='{% url "logout" %}'><small style="font-size:15px">+ Çıkış Yap</small></a>
                 {% else %}
                 <div class="col-md-6" style="margin-bottom: 120px;">
@@ -121,7 +118,7 @@
                           </div>
                           <div class="modal-body">
                             <h1>İletişim</h1>
-                            <form action="." method="POST">
+                            <form action='{% url "contact" %}' method="POST">
                             {% csrf_token %}
                             {% bootstrap_form contact_form %}
                                 <input type="submit" value="Save"/>
@@ -181,17 +178,17 @@
         })
 
          function genislet(){
-               $("input[name=q]").animate({
+               $("input#s").animate({
                     width: "400"
-                  }, 2000, function() {
+                  }, 500, function() {
                     // Animation complete.
                });
          }
 
          function kucult(){
-            $("input[name=q]").animate({
+            $("input#s").animate({
                     width: "300"
-                  }, 2000, function() {
+                  }, 500, function() {
                     // Animation complete.
               });
          }

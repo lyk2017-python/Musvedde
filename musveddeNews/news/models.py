@@ -7,14 +7,14 @@ from django.contrib.auth.models import User
 
 
 class Post(models.Model):
-    """ Class for Post News """
-    title = models.CharField(max_length=160)
-    content = models.TextField()
-    source = models.URLField(null=True, blank=True, default=None)
-    image = models.ImageField(null=True, blank=True, default=None)
+    """ Post modeli için gerekli alanlar tanımlanmıştır. """
+    title = models.CharField(max_length=160, verbose_name="Başlık")
+    content = models.TextField(verbose_name="İçerik")
+    source = models.URLField(null=True, blank=True, default=None, verbose_name="Kaynak")
+    image = models.ImageField(null=True, blank=True, default=None, verbose_name="Resim")
     liked = models.IntegerField(default=0)
     reported = models.PositiveIntegerField(default=0)
-    categories = models.ForeignKey("Category")
+    categories = models.ForeignKey("Category", verbose_name="Kategori")
     tags = models.ManyToManyField("Tags")
     read = models.PositiveIntegerField(default=0)
     slug = models.SlugField(max_length=160, blank=True, unique=True)
@@ -29,7 +29,7 @@ class Post(models.Model):
 
 
 class Category(models.Model):
-    """ Class for Categories """
+    """ Kategori modeli için gerekli tanımlamalar yapılmıştır """
     name = models.CharField(max_length=50, unique=True)
     parent = models.ForeignKey("self", blank=True, null=True, related_name="children")
     super_parent = models.ForeignKey("self", blank=True, null=True, related_name="super_children")
@@ -47,7 +47,7 @@ class Category(models.Model):
 
 
 class Tags(models.Model):
-    """ Class for Tags """
+    """ Etiketler modeli için gerekli tanımlamalar yapılmıştır """
     tag = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, blank=True, unique=True)
 
@@ -60,7 +60,7 @@ class Tags(models.Model):
 
 
 class Comments(models.Model):
-    """ Class for Comments """
+    """ Yorumlar için gerekli tanımlamalar yapılmıştır """
     comment = models.TextField(verbose_name="Yorum")
     post = models.ForeignKey("Post")
     liked_count = models.PositiveIntegerField(default=0)
@@ -78,6 +78,7 @@ class Comments(models.Model):
 
 
 class UserLikes(models.Model):
+    """ Haberde kullanıcaya ait beğeni modeli tanımlanmıştır. """
     user = models.ForeignKey(User)
     post = models.ForeignKey("Post")
 
